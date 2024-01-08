@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { doctorProfile, getDetails, getSingleDetails } from '../controller/doctor.controller';
+import { deleteUser, doctorProfile, getDetails, getSingleDetails, updateUser } from '../controller/doctor.controller';
 import { checkRequestBodyParams } from '../middleware/Validators';
 import { basicAuthUser } from '../middleware/checkAuth';
 const router:Router=Router();
@@ -23,5 +23,18 @@ router.post('/alluser',
     getDetails
 );
 
+
+router.post('/updateuser',
+    basicAuthUser,
+    checkRequestBodyParams('userId'),
+    updateUser
+);
+
+
+router.post('/deleteuser',
+    basicAuthUser,
+    checkRequestBodyParams('userId'),
+    deleteUser
+);
 
 export default router;

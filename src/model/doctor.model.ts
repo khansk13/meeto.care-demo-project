@@ -40,7 +40,7 @@ const doctorSchema = new mongoose.Schema({
     doctorBio:{type:String},
     qualification:{
         MBBS:{type:String},
-        Md:{type:String}
+        MD:{type:String}
     },
     experience:{type:String},
     specialization:{type:String},
