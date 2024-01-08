@@ -186,10 +186,10 @@ export let deleteUser = async (req, res, next) => {
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
- * @description This Function is used to get all user  .
+ * @description This Function is used to get filter details  .
  */ 
 
-// 3. user filter api 
+// 6. user filter api 
 
 export let getuserDetails = async (req, res, next) => {
     const errors = validationResult(req);
@@ -197,7 +197,7 @@ export let getuserDetails = async (req, res, next) => {
         try {
             const DoctorDetails: DoctorDocument = req.body;
             const user = await Doctor.findOne({_id:DoctorDetails.userId},{
-                doctorName:1,email:1
+                doctorName:1,email:1,specialization:1 ,_id:0
 
             })
             response(req, res, activity, 'Level-2', 'User-save', true, 200, user, clientError.success.fetchedSuccessfully);
