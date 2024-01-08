@@ -92,7 +92,7 @@ export let getDetails = async (req, res, next) => {
  * @description This Function is used to get all user  .
  */ 
 
-// 3. all user api .
+// 3. all user api 
 
 export let getSingleDetails = async (req, res, next) => {
     const errors = validationResult(req);
