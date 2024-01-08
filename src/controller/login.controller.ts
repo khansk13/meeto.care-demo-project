@@ -8,6 +8,17 @@ import * as TokenManager from "../utils/tokenManager";
 
 var activity = "login";
 
+/**
+ * @author Kaaviyan
+ * @date 08-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is used to login doctoruser .
+ */ 
+
+// 1. login  api 
+
 export let loginUser = async (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {

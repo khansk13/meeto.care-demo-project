@@ -56,3 +56,56 @@ export let doctorProfile = async (req, res, next) => {
 }
  
 
+/**
+ * @author Kaaviyan
+ * @date 08-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is used to get all user  .
+ */ 
+
+// 3. all user  api 
+
+export let getDetails = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        try {
+            const DoctorDetails: DoctorDocument = req.body;
+            const user = await Doctor.find({_id:DoctorDetails.id})
+            response(req, res, activity, 'Level-2', 'User-save', true, 200, user, clientError.success.fetchedSuccessfully);
+        }
+        catch (err: any) {
+            response(req, res, activity, 'Level-3', 'User-save', false, 500, {}, errorMessage.internalServer, err.message);
+        }
+    } else {
+        response(req, res, activity, 'Level-3', 'User-save', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+    }
+} 
+
+/**
+ * @author Kaaviyan
+ * @date 08-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is used to get all user  .
+ */ 
+
+// 3. all user  api 
+
+export let getSingleDetails = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        try {
+            const DoctorDetails: DoctorDocument = req.body;
+            const user = await Doctor.findOne({_id:DoctorDetails.id})
+            response(req, res, activity, 'Level-2', 'User-save', true, 200, user, clientError.success.fetchedSuccessfully);
+        }
+        catch (err: any) {
+            response(req, res, activity, 'Level-3', 'User-save', false, 500, {}, errorMessage.internalServer, err.message);
+        }
+    } else {
+        response(req, res, activity, 'Level-3', 'User-save', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+    }
+} 
