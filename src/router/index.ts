@@ -1,9 +1,12 @@
 import { Router } from 'express';
 const router: Router = Router();
-import  Doctor from './doctor.router';
-import  Login from './login.router';
+import  User from './user.routes';
+import Login from './login.routes';
+import Company from './company.routes';
 
-router.use('/doctor', Doctor)
+
+router.use('/user',User)
 router.use('/login',Login)
+router.use('/company',Company)
 
 export default router

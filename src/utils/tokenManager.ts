@@ -14,14 +14,14 @@ const activity = 'token';
 
 export let CreateJWTToken = (data: any = {}) => {
     let tokenData = {};
-    if (data && data['companyName']) {
-        tokenData['companyName'] = data['companyName']
+    if (data && data['userName']) {
+        tokenData['userName'] = data['userName']
     }
-    if (data && data['companyId']) {
-        tokenData['companyId'] = data['companyId']
+    if (data && data['userId']) {
+        tokenData['userId'] = data['userId']
     }
   
-    const token = jwt.sign(tokenData, 'pixaliveworks', { expiresIn: '8h' });
+    const token = jwt.sign(tokenData, 'pixaliveworks', { expiresIn: '7days' });
     return token;
 }
 
