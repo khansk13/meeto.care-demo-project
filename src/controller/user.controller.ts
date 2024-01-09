@@ -55,6 +55,12 @@ export let userProfile = async (req, res, next) => {
         response(req, res, activity, 'Level-3', 'User-Profile', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 }
+
+
+
+
+
+
  
 
 /**
