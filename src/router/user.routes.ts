@@ -13,25 +13,23 @@ router.post('/createuser',
 
 router.post('/singleuser',
     basicAuthUser,
-    checkRequestBodyParams('email'),
+    checkRequestBodyParams('userId'),
     getSingleDetails
 );
 
 router.post('/alluser',
     basicAuthUser,
-    checkRequestBodyParams('userName'),
     getDetails
 );
 
-router.post('/filterdetails',
+router.post('/filter',
     basicAuthUser,
-    checkRequestBodyParams('userId'),
+    checkRequestBodyParams('email'),
     getFilterDetails
 );
 
-router.post('/deleteuser',
+router.post('/delete',
     basicAuthUser,
-    checkRequestBodyParams('userId'),
     deleteUser
 );
 

@@ -73,7 +73,7 @@ export let getDetails = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const userDetails: UserDocument = req.body;
-            const user = await User.find({_id:userDetails.email})
+            const user = await User.find({})
             response(req, res, activity, 'Level-2', 'get-Details', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
@@ -100,7 +100,7 @@ export let getSingleDetails = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const userDetails: UserDocument = req.body;
-            const user = await User.findOne({_id:userDetails.userName})
+            const user = await User.findOne({_id:userDetails.userId})
             response(req, res, activity, 'Level-2', 'get-Single-Details', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
@@ -160,8 +160,8 @@ export let deleteUser = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const UserDetails: UserDocument = req.body;
-            const user = await User.updateOne({_id:UserDetails.userId},{$set:{isDeleted:true}})
-            response(req, res, activity, 'Level-2', 'delete-user', true, 200, user, clientError.success.deleteSuccess);
+            const userdelete = await User.updateOne({_id:UserDetails.userId},{$set:{isDeleted:true}})
+            response(req, res, activity, 'Level-2', 'delete-user', true, 200, userdelete, clientError.success.deleteSuccess);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'delete-user', false, 500, {}, errorMessage.internalServer, err.message);
@@ -188,8 +188,8 @@ export let getFilterDetails = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const userDetails: UserDocument = req.body;
-            const user = await User.findOne({_id:userDetails.userId},{
-                doctorName:1,email:1,specialization:1 ,_id:0
+            const user = await User.find({email:userDetails.email},{
+                userName:1,mobileNumber:1 ,_id:0
 
             })
             response(req, res, activity, 'Level-2', 'get-Filter-Details', true, 200, user, clientError.success.fetchedSuccessfully);
