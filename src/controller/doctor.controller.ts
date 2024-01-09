@@ -26,6 +26,7 @@ export let doctorPanel = async (req, res, next) => {
                 const userotp =   Math.floor(1000 + Math.random() * 9999);
                 DoctorDetails.otp = userotp ;
                 const uniqueId =   Math.floor(Math.random() * 10000);
+                DoctorDetails.doctorId = uniqueId ;
                 const createData = new Doctor(DoctorDetails);
                 let insertData = await createData.save();
                 const token = await TokenManager.CreateJWTToken({

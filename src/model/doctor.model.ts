@@ -15,6 +15,7 @@ export interface DoctorDocument extends mongoose.Document {
     address?:string;
     scheduleTime?:string ;
     scheduleDays?:string ;
+    doctorId?:number;
     city?:string ;
     state?:string ;
     pincode? :number ;
@@ -42,6 +43,7 @@ const doctorSchema = new mongoose.Schema({
         MBBS:{type:String},
         Md:{type:String}
     },
+    doctorId:{type:Number},
     experience:{type:String},
     specialization:{type:String},
     profileImage:{type:String},
