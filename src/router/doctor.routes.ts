@@ -6,7 +6,7 @@ const router:Router=Router();
 
 router.post('/doctoruser',
     basicAuthUser,
-    checkRequestBodyParams('email'),
+     checkRequestBodyParams('email'),
     doctorPanel
 );
 

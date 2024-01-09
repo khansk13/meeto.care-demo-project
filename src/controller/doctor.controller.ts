@@ -20,9 +20,9 @@ export let doctorPanel = async (req, res, next) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         try {
-            const DoctorData = await Doctor.findOne({ $and: [{ isDeleted: false }, { email: req.body.email }] });
+            const DoctorDetails: DoctorDocument = req.body;
+            const DoctorData = await Doctor.findOne({ $and: [{ isDeleted: false }, { email: DoctorDetails.email }] });
             if (!DoctorData) {
-                const DoctorDetails: DoctorDocument = req.body;
                 const userotp =   Math.floor(1000 + Math.random() * 9999);
                 DoctorDetails.otp = userotp ;
                 const uniqueId =   Math.floor(Math.random() * 10000);
@@ -74,7 +74,7 @@ export let getAllPanel = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const DoctorDetails: DoctorDocument = req.body;
-            const user = await Doctor.find({})
+            const user = await Doctor.find({isDeleted:false})
             response(req, res, activity, 'Level-2', 'get-all-Panel', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
@@ -129,7 +129,15 @@ export let updatePanel = async (req, res, next) => {
         try {
             const DoctorDetails: DoctorDocument = req.body; 
             const data = await Doctor.findByIdAndUpdate({_id:DoctorDetails.userId},{$set:{
-            
+                qualification:DoctorDetails.qualification,
+                experience:DoctorDetails.experience,
+                specialization:DoctorDetails.specialization,
+                profileImage:DoctorDetails.profileImage,
+                language:DoctorDetails.language,
+                gender:DoctorDetails.gender,
+                address:DoctorDetails.address,
+                city:DoctorDetails.city,
+                state:DoctorDetails.state,
             }                                     
             })
            

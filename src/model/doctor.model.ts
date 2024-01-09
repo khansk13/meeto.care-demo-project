@@ -20,6 +20,7 @@ export interface DoctorDocument extends mongoose.Document {
     state?:string ;
     pincode? :number ;
     userCount?:number ;
+    profileImage?:string;
     landLineNumber?:string ;
     fcmToken?:string ;
     reviews?:string ;
@@ -69,18 +70,6 @@ const doctorSchema = new mongoose.Schema({
     modifiedBy: { type: String },
 });
 
-// doctorSchema.pre('save',async function(){
-//     try {
-//     const user = this 
-//     const user1 = mongoose.model("userDetails")
-//     const counts = await user1.countDocuments()
-//     this.userCount=counts+1
-//     } 
-//     catch (error) {
-//     console.log(error)
-//    }
-// })
 
-//doctorSchema.plugin(autoIncrement.plugin, { model: 'User', field: 'userId', startAt: 1 });
 
 export const Doctor = mongoose.model("doctorslist", doctorSchema);
