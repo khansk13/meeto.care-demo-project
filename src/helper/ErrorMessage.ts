@@ -103,6 +103,7 @@ export let clientError = Object.freeze({
         nameExist: 'Name already exist !',
         fetchedSuccessfully: 'Fetched Successfully !',
         sendSuccessfully: 'Send Successfully',
+        ratingsucces :'succesfully rating the product'
     },
     account: {
         deActive: 'Your account is deactived',

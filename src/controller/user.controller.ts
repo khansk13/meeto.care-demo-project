@@ -21,8 +21,8 @@ export let userProfile = async (req, res, next) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         try {
-            const companyData = await User.findOne({ $and: [{ isDeleted: false }, { email: req.body.email }] });
-            if (!companyData) {
+            const userData = await User.findOne({ $and: [{ isDeleted: false }, { email: req.body.email }] });
+            if (!userData) {
                 const userDetails: UserDocument = req.body;
                 userDetails.myReferralCode = generate(5);  
                 const userotp =   Math.floor(1000 + Math.random() * 9999);
