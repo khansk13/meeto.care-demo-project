@@ -1,4 +1,6 @@
 import * as mongoose from "mongoose";
+
+
 export interface DoctorDocument extends mongoose.Document {
     _id?: any;
     userId?: any;
