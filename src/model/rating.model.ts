@@ -16,7 +16,7 @@ export interface ratingDocument extends mongoose.Document {
 
 const ratingSchema = new mongoose.Schema({
     _id: { type: mongoose.Types.ObjectId, required: true, auto: true },
-    productId:{type:mongoose.Types.ObjectId},
+    productId:{type:mongoose.Types.ObjectId,ref:'products'},
     uniqueId:{type:Number},
     comments:[{
         comment:{type:String},
