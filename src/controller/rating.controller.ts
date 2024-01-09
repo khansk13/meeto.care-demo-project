@@ -18,35 +18,20 @@ var activity = "ratings"
  */ 
 
 // 1. Rating  api 
-export let userRating = async (req, res, next) => {
+export let saveProductRating = async (req, res, next: any) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         try {
-            const userDetails: UserDocument = req.body;
-            const productData = await User.findOne({ $and: [{ isDeleted: false }, {_id:userDetails.userId }] });
-            if (productData) {
-                const RatingDetails: ratingDocument = req.body;
-                let uniqueid = Math.floor(10 + Math.random() * 999);
-                RatingDetails.uniqueId = uniqueid;  
-                const createData = new Rating(RatingDetails);
-                let insertData = await createData.save();
-                const result = {}
-                result['_id'] = insertData._id
-                result['productName'] = insertData.productId;
-                result['userComments'] = insertData.comments;
-                let finalResult = {};
-                finalResult["Product"] = 'Products';
-                finalResult["Ratings"] = result;
-                response(req, res, activity, 'Level-2', 'User-Profile', true, 200, result, clientError.success.ratingsucces);
-                } else {
-                    response(req, res, activity, 'Level-3', 'User-Profile', true, 422, {},clientError.email.emailNotVerified);
-                }
-            }
-         catch (err: any) {
-            response(req, res, activity, 'Level-3', 'User-Profile', false, 500, {}, errorMessage.internalServer, err.message);
+            const ratingDetails: ratingDocument = req.body;
+            const createData = new Rating(ratingDetails);
+            const insertData = await createData.save();
+            response(req, res, activity, 'Level-2', 'Save-ProductRating', true, 200, insertData, clientError.success.savedSuccessfully);
+        }
+        catch (err: any) {
+            response(req, res, activity, 'Level-3', 'Save-ProductRating', false, 500, {}, errorMessage.internalServer, err.message);
         }
     } else {
-        response(req, res, activity, 'Level-3', 'User-Profile', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+        response(req, res, activity, 'Level-3', 'Save-ProductRating', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 }
 
@@ -62,20 +47,16 @@ export let userRating = async (req, res, next) => {
 // 2. all user  rating 
 
 export let getAllRating = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
+ 
         try {
-            const RatingDetails: ratingDocument = req.body;
-            const user = await Rating.find({})
+           
+            const user = await Rating.find({isDeleted:false})
             response(req, res, activity, 'Level-2', 'get-All-Rating', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'get-All_Rating', false, 500, {}, errorMessage.internalServer, err.message);
         }
-    } else {
-        response(req, res, activity, 'Level-3', 'get-All-Rating', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
-    }
-} 
+    } 
 
 /**
  * @author Kaaviyan
@@ -89,20 +70,14 @@ export let getAllRating = async (req, res, next) => {
 // 3. all single user rating 
 
 export let getSingleUserRating = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
         try {
-            const RatingDetails: ratingDocument = req.body;
-            const user = await Rating.findOne({_id:RatingDetails.productId})
+            const user = await Rating.findOne({_id:req.body._id})
             response(req, res, activity, 'Level-2', 'get-Single-User-Rating', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'get-Single-User-Rating', false, 500, {}, errorMessage.internalServer, err.message);
         }
-    } else {
-        response(req, res, activity, 'Level-3', 'get-Single-User-Rating', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
-    }
-} 
+    } 
 
 
 /**
@@ -117,20 +92,15 @@ export let getSingleUserRating = async (req, res, next) => {
 // 4. delete user Rating 
 
 export let deleteRating = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
         try {
-            const RatingDetails: ratingDocument = req.body;
-            const userdelete = await Rating.updateOne({_id:RatingDetails.productId},{$set:{isDeleted:true}})
+            const {modifiedOn, modifiedBy} = req.body
+            const userdelete = await Rating.updateOne({_id:req.body._id},{$set:{isDeleted:true}})
             response(req, res, activity, 'Level-2', 'delete-Rating', true, 200, userdelete, clientError.success.deleteSuccess);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'delete-Rating', false, 500, {}, errorMessage.internalServer, err.message);
         }
-    } else {
-        response(req, res, activity, 'Level-3', 'delete-Rating', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
-    }
-} 
+    } 
 
 
 /**
