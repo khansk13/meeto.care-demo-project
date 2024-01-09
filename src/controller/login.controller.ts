@@ -2,7 +2,7 @@
 import { validationResult } from "express-validator";
 import { clientError, errorMessage } from "../helper/ErrorMessage";
 import { response, sendEmailOtp } from "../helper/commonResponseHandler";
-import { User, UserDocument } from "../model/usermodel";
+import { User, UserDocument } from "../model/user.model";
 import * as TokenManager from "../utils/tokenManager";
 
 

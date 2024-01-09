@@ -3,7 +3,7 @@ import { clientError, errorMessage } from "../helper/ErrorMessage";
 import { generate, response, sendEmailOtp } from "../helper/commonResponseHandler";
 import * as TokenManager from "../utils/tokenManager";
 import { Rating, ratingDocument } from "../model/rating.model";
-import { User, UserDocument } from "../model/usermodel";
+import { User, UserDocument } from "../model/user.model";
 
 
 var activity = "ratings"

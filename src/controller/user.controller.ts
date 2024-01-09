@@ -2,7 +2,8 @@ import { validationResult } from "express-validator";
 import { clientError, errorMessage } from "../helper/ErrorMessage";
 import { generate, response, sendEmailOtp } from "../helper/commonResponseHandler";
 import * as TokenManager from "../utils/tokenManager";
-import { User, UserDocument } from "../model/usermodel";
+import { User, UserDocument } from "../model/user.model";
+import { Post, PostDocument } from "../model/post.model";
 
 
 var activity = "user"
@@ -141,6 +142,8 @@ export let updateUser = async (req, res, next) => {
 } 
 
 
+
+
 /**
  * @author Kaaviyan
  * @date 08-01-2024
@@ -196,5 +199,66 @@ export let getFilterDetails = async (req, res, next) => {
         }
     } else {
         response(req, res, activity, 'Level-3', 'get-Filter-Details', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+    }
+} 
+
+
+/**
+ * @author Kaaviyan
+ * @date 09-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is used to blocked user  .
+ */ 
+
+// 7. blocked user user api 
+
+export let Blockeduser = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        try {
+            const userDetails: UserDocument = req.body;
+            const blockuser = await User.updateOne({ _id: userDetails.userId }, { $push: { blockeduser:userDetails.blockedUser } })
+            console.log(blockuser);
+            const showblockuser = await User.find({ _id: userDetails.userId }, { blockeduser: 1 })
+            response(req, res, activity, 'Level-2', 'update-user', true, 200, showblockuser, clientError.account.inActive);
+        }
+        catch (err: any) {
+            response(req, res, activity, 'Level-3', 'update-user', false, 500, {}, errorMessage.internalServer, err.message);
+        }
+    } else {
+        response(req, res, activity, 'Level-3', 'update-user', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+    }
+} 
+
+
+/**
+ * @author Kaaviyan
+ * @date 09-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is used to feed page  user  .
+ */ 
+
+// 7.  user feed page api 
+
+export let feedpage = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        try {
+            const userDetails: UserDocument = req.body;
+            const PostDetails: PostDocument = req.body;
+            const user = await User.findOne({ _id: userDetails.userId }, {blockedUsers:1 ,_id:0 } )
+            const blockeduser= user.blockedUsers
+            const userpost = await Post.find({$and:[{$nin:blockeduser},{isdelete:false}]})
+            response(req, res, activity, 'Level-2', 'update-user', true, 200, userpost, clientError.success.fetchedSuccessfully);
+        }
+        catch (err: any) {
+            response(req, res, activity, 'Level-3', 'update-user', false, 500, {}, errorMessage.internalServer, err.message);
+        }
+    } else {
+        response(req, res, activity, 'Level-3', 'update-user', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 } 
