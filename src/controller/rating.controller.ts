@@ -3,7 +3,7 @@ import { clientError, errorMessage } from "../helper/ErrorMessage";
 import { generate, response, sendEmailOtp } from "../helper/commonResponseHandler";
 import * as TokenManager from "../utils/tokenManager";
 import { Rating, ratingDocument } from "../model/rating.model";
-import { User, UserDocument } from "../model/usermodel";
+import { User, UserDocument } from "../model/user.model";
 
 
 var activity = "ratings"
@@ -18,35 +18,24 @@ var activity = "ratings"
  */ 
 
 // 1. Rating  api 
-export let userRating = async (req, res, next) => {
+export let saveProductRating = async (req, res, next: any) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         try {
+            const ratingDetails: ratingDocument = req.body;
             const userDetails: UserDocument = req.body;
-            const productData = await User.findOne({ $and: [{ isDeleted: false }, {_id:userDetails.userId }] });
-            if (productData) {
-                const RatingDetails: ratingDocument = req.body;
-                let uniqueid = Math.floor(10 + Math.random() * 999);
-                RatingDetails.uniqueId = uniqueid;  
-                const createData = new Rating(RatingDetails);
-                let insertData = await createData.save();
-                const result = {}
-                result['_id'] = insertData._id
-                result['productName'] = insertData.productId;
-                result['userComments'] = insertData.comments;
-                let finalResult = {};
-                finalResult["Product"] = 'Products';
-                finalResult["Ratings"] = result;
-                response(req, res, activity, 'Level-2', 'User-Profile', true, 200, result, clientError.success.ratingsucces);
-                } else {
-                    response(req, res, activity, 'Level-3', 'User-Profile', true, 422, {},clientError.email.emailNotVerified);
-                }
-            }
-         catch (err: any) {
-            response(req, res, activity, 'Level-3', 'User-Profile', false, 500, {}, errorMessage.internalServer, err.message);
+            const createData = new Rating(ratingDetails);
+            const insertData = await createData.save();
+            const user= await User.findOne({_id:userDetails.userId},{userName:1,_id:0})
+            console.log(user)
+            const data= await Rating.updateOne({_id:ratingDetails.productId},{$push:{comments:[{comment:req.body.commment,name:user.userName}]}})
+            response(req, res, activity, 'Level-2', 'Save-ProductRating', true, 200, data, clientError.success.savedSuccessfully);
+        }
+        catch (err: any) {
+            response(req, res, activity, 'Level-3', 'Save-ProductRating', false, 500, {}, errorMessage.internalServer, err.message);
         }
     } else {
-        response(req, res, activity, 'Level-3', 'User-Profile', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+        response(req, res, activity, 'Level-3', 'Save-ProductRating', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 }
 

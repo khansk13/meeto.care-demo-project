@@ -2,7 +2,11 @@ import { validationResult } from "express-validator";
 import { clientError, errorMessage } from "../helper/ErrorMessage";
 import { generate, response, sendEmailOtp } from "../helper/commonResponseHandler";
 import * as TokenManager from "../utils/tokenManager";
-import { User, UserDocument } from "../model/usermodel";
+
+import { User, UserDocument } from "../model/user.model";
+
+import { Post, PostDocument } from "../model/post.model";
+
 
 
 var activity = "user"
@@ -75,20 +79,29 @@ export let userProfile = async (req, res, next) => {
 // 2. all user  api 
 
 export let getDetails = async (req, res, next) => {
+
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         try {
             const userDetails: UserDocument = req.body;
-            const user = await User.find({})
+          
+
+            
+            const user = await User.find({isDeleted:false})
+
             response(req, res, activity, 'Level-2', 'get-Details', true, 200, user, clientError.success.fetchedSuccessfully);
-        }
-        catch (err: any) {
+        
+            }    catch (err: any) {
             response(req, res, activity, 'Level-3', 'get-Details', false, 500, {}, errorMessage.internalServer, err.message);
         }
+
     } else {
         response(req, res, activity, 'Level-3', 'get-Details', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 } 
+
+
+
 
 /**
  * @author Kaaviyan
@@ -102,20 +115,28 @@ export let getDetails = async (req, res, next) => {
 // 3. all user api 
 
 export let getSingleDetails = async (req, res, next) => {
+
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         try {
             const userDetails: UserDocument = req.body;
             const user = await User.findOne({_id:userDetails.userId})
+
+    
+
             response(req, res, activity, 'Level-2', 'get-Single-Details', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'get-Single-Details', false, 500, {}, errorMessage.internalServer, err.message);
         }
+
     } else {
         response(req, res, activity, 'Level-3', 'get-Single-Details', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 } 
+
+
+
 
 /**
  * @author Kaaviyan
@@ -135,7 +156,13 @@ export let updateUser = async (req, res, next) => {
             const userDetails: UserDocument = req.body; 
             const data = await User.findByIdAndUpdate({_id:userDetails.userId},{$set:{
              DOB:userDetails.DOB,
-             bankDetails:userDetails.bankDetails
+
+            
+
+             bankDetails:userDetails.bankDetails,
+             modifiedOn:new Date(),
+             modifiedBy:userDetails.modifiedBy
+
             }                                     
             })
            
@@ -150,6 +177,7 @@ export let updateUser = async (req, res, next) => {
 } 
 
 
+
 /**
  * @author Kaaviyan
  * @date 08-01-2024
@@ -162,20 +190,35 @@ export let updateUser = async (req, res, next) => {
 // 5. delete user api 
 
 export let deleteUser = async (req, res, next) => {
+
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         try {
             const UserDetails: UserDocument = req.body;
-            const userdelete = await User.updateOne({_id:UserDetails.userId},{$set:{isDeleted:true}})
+       
+
+    
+            const {modifiedOn, modifiedBy} = req.body
+            const userdelete = await User.updateOne({_id:req.body._id},{
+                $set:{
+                    isDeleted:true,
+                    modifiedOn,
+                    modifiedBy
+                }})
+
             response(req, res, activity, 'Level-2', 'delete-user', true, 200, userdelete, clientError.success.deleteSuccess);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'delete-user', false, 500, {}, errorMessage.internalServer, err.message);
         }
-    } else {
+
+     } else {
         response(req, res, activity, 'Level-3', 'delete-user', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 } 
+
+    
+
 
 
 /**
@@ -206,4 +249,67 @@ export let getFilterDetails = async (req, res, next) => {
     } else {
         response(req, res, activity, 'Level-3', 'get-Filter-Details', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
+
+
+} 
+
+
+/**
+ * @author Kaaviyan
+ * @date 09-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is used to blocked user  .
+ */ 
+
+// 7. blocked user user api 
+
+export let Blockeduser = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        try {
+            const userDetails: UserDocument = req.body;
+             const user = await User.updateOne({ _id: userDetails._id }, { $push: { blockeduser:userDetails.blockId } })
+            response(req, res, activity, 'Level-2', 'update-user', true, 200, user, clientError.account.inActive);
+        }
+        catch (err: any) {
+            response(req, res, activity, 'Level-3', 'update-user', false, 500, {}, errorMessage.internalServer, err.message);
+        }
+    } else {
+        response(req, res, activity, 'Level-3', 'update-user', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+    }
+} 
+
+
+/**
+ * @author Kaaviyan
+ * @date 09-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is used to feed page  user  .
+ */ 
+
+// 7.  user feed page api 
+
+export let feedpage = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        try {
+            const userDetails: UserDocument = req.body;
+            const PostDetails: PostDocument = req.body;
+            const user = await User.findOne({ _id: userDetails.userId }, {blockeduser:1 ,_id:0 } )
+            console.log(user);
+            const blockeduser= user.blockeduser
+            const userpost = await Post.find({$and:[{$nin:blockeduser},{isdelete:false}]})
+            response(req, res, activity, 'Level-2', 'update-user', true, 200, userpost, clientError.success.fetchedSuccessfully);
+        }
+        catch (err: any) {
+            response(req, res, activity, 'Level-3', 'update-user', false, 500, {}, errorMessage.internalServer, err.message);
+        }
+    } else {
+        response(req, res, activity, 'Level-3', 'update-user', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+    }
+
 } 

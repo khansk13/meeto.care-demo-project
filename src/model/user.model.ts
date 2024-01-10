@@ -10,7 +10,9 @@ export interface UserDocument extends mongoose.Document {
     referralCode?: String;
     myReferralCode?: String;
     bankDetails?: any;
-    blockedUser?: any;
+    postCount?:number;
+    blockeduser?:any;
+    blockId?:any ;
     notification?: number;
     fcm_Token?: string;
     otp?: number;
@@ -37,9 +39,11 @@ const userSchema = new mongoose.Schema({
         ifsc: { type: String },
         accountHolderName: { type: String }
     }],
-    blockedUsers: { type: mongoose.Types.ObjectId, ref:'users' },
+    blockeduser:{type:mongoose.Types.ObjectId},
+    blockId:{type:mongoose.Types.ObjectId},
     notification: { type: Number},
     fcm_Token: { type: String },
+    postCount:{type:Number},
     otp: { type: Number },
     isDeleted: { type: Boolean, default: false },
     status: { type: Number, default: 1 },
