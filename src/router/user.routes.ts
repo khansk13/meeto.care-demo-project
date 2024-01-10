@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { deleteUser, getDetails, getFilterDetails, getSingleDetails, updateUser, userProfile } from '../controller/user.controller';
+import { Blockeduser, deleteUser, feedpage, getDetails, getFilterDetails, getSingleDetails, updateUser, userProfile } from '../controller/user.controller';
 import { checkRequestBodyParams } from '../middleware/Validators';
 import { basicAuthUser } from '../middleware/checkAuth';
 const router:Router=Router();
@@ -38,6 +38,20 @@ router.post('/updateuser',
     checkRequestBodyParams('userId'),
     updateUser
 );
+
+router.post('/userblock',
+    basicAuthUser,
+    checkRequestBodyParams('_id'),
+    Blockeduser
+);
+
+
+router.post('/userfeed',
+    basicAuthUser,
+    checkRequestBodyParams('userId'),
+    feedpage
+);
+
 
 
 export default router;

@@ -23,9 +23,13 @@ export let saveProductRating = async (req, res, next: any) => {
     if (errors.isEmpty()) {
         try {
             const ratingDetails: ratingDocument = req.body;
+            const userDetails: UserDocument = req.body;
             const createData = new Rating(ratingDetails);
             const insertData = await createData.save();
-            response(req, res, activity, 'Level-2', 'Save-ProductRating', true, 200, insertData, clientError.success.savedSuccessfully);
+            const user= await User.findOne({_id:userDetails.userId},{userName:1,_id:0})
+            console.log(user)
+            const data= await Rating.updateOne({_id:ratingDetails.productId},{$push:{comments:[{comment:req.body.commment,name:user.userName}]}})
+            response(req, res, activity, 'Level-2', 'Save-ProductRating', true, 200, data, clientError.success.savedSuccessfully);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'Save-ProductRating', false, 500, {}, errorMessage.internalServer, err.message);

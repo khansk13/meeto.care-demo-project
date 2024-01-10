@@ -219,10 +219,8 @@ export let Blockeduser = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const userDetails: UserDocument = req.body;
-            const blockuser = await User.updateOne({ _id: userDetails.userId }, { $push: { blockeduser:userDetails.blockedUser } })
-            console.log(blockuser);
-            const showblockuser = await User.find({ _id: userDetails.userId }, { blockeduser: 1 })
-            response(req, res, activity, 'Level-2', 'update-user', true, 200, showblockuser, clientError.account.inActive);
+             const user = await User.updateOne({ _id: userDetails._id }, { $push: { blockeduser:userDetails.blockId } })
+            response(req, res, activity, 'Level-2', 'update-user', true, 200, user, clientError.account.inActive);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'update-user', false, 500, {}, errorMessage.internalServer, err.message);
@@ -250,8 +248,9 @@ export let feedpage = async (req, res, next) => {
         try {
             const userDetails: UserDocument = req.body;
             const PostDetails: PostDocument = req.body;
-            const user = await User.findOne({ _id: userDetails.userId }, {blockedUsers:1 ,_id:0 } )
-            const blockeduser= user.blockedUsers
+            const user = await User.findOne({ _id: userDetails.userId }, {blockeduser:1 ,_id:0 } )
+            console.log(user);
+            const blockeduser= user.blockeduser
             const userpost = await Post.find({$and:[{$nin:blockeduser},{isdelete:false}]})
             response(req, res, activity, 'Level-2', 'update-user', true, 200, userpost, clientError.success.fetchedSuccessfully);
         }

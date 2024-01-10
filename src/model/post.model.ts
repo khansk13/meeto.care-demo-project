@@ -18,7 +18,7 @@ export interface PostDocument extends mongoose.Document {
 };
  
    const postSchema = new mongoose.Schema({
-    _id:{type:mongoose.Types.ObjectId},
+    _id: { type: mongoose.Types.ObjectId, required: true, auto: true },
     userId:{type:mongoose.Types.ObjectId,ref:'user'},
     title:{type:String},
     media:{type:String},
@@ -36,5 +36,4 @@ export interface PostDocument extends mongoose.Document {
 })
    
 
-export const  Post = mongoose.model("post", postSchema);
-
+export const Post = mongoose.model("post", postSchema);

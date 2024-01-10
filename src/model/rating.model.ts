@@ -3,7 +3,6 @@ import * as mongoose from "mongoose";
 export interface ratingDocument extends mongoose.Document {
     _id?: any;
     productId?:any;
-    uniqueId?:number;
     comments?:any;
     ratingstar?:any ;
     isDeleted?: boolean;
@@ -17,7 +16,6 @@ export interface ratingDocument extends mongoose.Document {
 const ratingSchema = new mongoose.Schema({
     _id: { type: mongoose.Types.ObjectId, required: true, auto: true },
     productId:{type:mongoose.Types.ObjectId,ref:'products'},
-    uniqueId:{type:Number},
     comments:[{
         comment:{type:String},
         name:{type:String}
