@@ -29,9 +29,9 @@ export interface PostDocument extends mongoose.Document {
     isdelete:{type:Boolean,default:false},
     report:{type:Number},
     Status:{type:Number, default:1},
-    createdOn:{type:String},
+    createdOn:{type:Date},
     createdBy:{type:String},
-    modifiedOn:{type:String},
+    modifiedOn:{type:Date},
     modifiedBy:{type:String}
 })
    
