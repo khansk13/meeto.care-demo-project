@@ -38,8 +38,8 @@ export let productcreate = async (req, res) => {
 export let getSingleuser = async (req, res, next) => {
       
     try {
-        
-        const dataDate=await product.findOne({_id:req.body._id})
+        const productDetail: productDocument = req.body;
+        const dataDate=await product.findOne({_id:productDetail.userId})
         response(req, res, activity, 'Level-3', 'getSingleuser-User', true, 200, dataDate, clientError.success.fetchedSuccessfully);
     } catch (err: any) {
         response(req, res, activity, 'Level-3', 'getSingleuser-User', false, 500, {}, errorMessage.internalServer, err.message);
@@ -51,7 +51,7 @@ export let getSingleuser = async (req, res, next) => {
 export let getAllUser = async (req, res, next) => {
        
     try {
-   
+        const productDetail: productDocument = req.body;
    const dataDate=await product.find({isDeleted:false})
         response(req, res, activity, 'Level-3', 'getAllUser-User', true, 200, dataDate, clientError.success.fetchedSuccessfully);
     } catch (err: any) {
@@ -63,7 +63,8 @@ export let getAllUser = async (req, res, next) => {
 export let deleteUser= async (req, res, next) => {
 
     try {
-   const dataDate=await product.findByIdAndUpdate({_id:req.body.id},{$set:{isDeleted:true}})
+        const productDetail: productDocument = req.body;
+   const dataDate=await product.findByIdAndUpdate({_id:productDetail.userId},{$set:{isDeleted:true}})
         response(req, res, activity, 'Level-3', 'deleteUser-User', true, 200, dataDate, clientError.success.fetchedSuccessfully);
     } catch (err: any) {
         response(req, res, activity, 'Level-3', 'deleteUser-User', false, 500, {}, errorMessage.internalServer, err.message);
@@ -76,10 +77,10 @@ export let deleteUser= async (req, res, next) => {
 export let filter = async (req, res, next) => {
 
 try {
-
-const dataDate=await product.find({isDeleted:false},{email:1,doctorName:1})
+    const productDetail: productDocument = req.body;
+const dataDate=await product.find({_id:productDetail.userId},{email:1,doctorName:1})
     response(req, res, activity, 'Level-3', 'getAllUser-User', true, 200, dataDate, clientError.success.fetchedSuccessfully);
 } catch (err: any) {
     response(req, res, activity, 'Level-3', 'getAllUser-User', false, 500, {}, errorMessage.internalServer, err.message);
        }
-    }
+    }   
