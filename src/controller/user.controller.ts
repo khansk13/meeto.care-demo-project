@@ -3,6 +3,7 @@ import { clientError, errorMessage } from "../helper/ErrorMessage";
 import { generate, response, sendEmailOtp } from "../helper/commonResponseHandler";
 import * as TokenManager from "../utils/tokenManager";
 import { User, UserDocument } from "../model/user.model";
+
 import { Post, PostDocument } from "../model/post.model";
 
 
@@ -80,8 +81,8 @@ export let getDetails = async (req, res, next) => {
             
             const user = await User.find({isDeleted:false})
             response(req, res, activity, 'Level-2', 'get-Details', true, 200, user, clientError.success.fetchedSuccessfully);
-        }
-        catch (err: any) {
+        
+            }    catch (err: any) {
             response(req, res, activity, 'Level-3', 'get-Details', false, 500, {}, errorMessage.internalServer, err.message);
         }
 }
@@ -140,7 +141,6 @@ export let updateUser = async (req, res, next) => {
         response(req, res, activity, 'Level-3', 'update-user', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 } 
-
 
 
 
