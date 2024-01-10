@@ -219,7 +219,7 @@ export let Blockeduser = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const userDetails: UserDocument = req.body;
-             const user = await User.updateOne({ _id: userDetails._id }, { $push: { blockeduser:userDetails.blockId } })
+             const user = await User.updateOne({ _id: userDetails._id }, { $push: { blockeduser:userDetails.blockeduser } })
             response(req, res, activity, 'Level-2', 'update-user', true, 200, user, clientError.account.inActive);
         }
         catch (err: any) {
@@ -248,7 +248,7 @@ export let feedpage = async (req, res, next) => {
         try {
             const userDetails: UserDocument = req.body;
             const PostDetails: PostDocument = req.body;
-            const user = await User.findOne({ _id: userDetails.userId }, {blockeduser:1 ,_id:0 } )
+            const user = await User.findOne({ _id: userDetails.userId },{blockeduser:1,_id:1})
             console.log(user);
             const blockeduser= user.blockeduser
             const userpost = await Post.find({$and:[{$nin:blockeduser},{isdelete:false}]})
