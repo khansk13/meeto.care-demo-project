@@ -101,3 +101,21 @@ export let  sendEmailOtp=async(email,otp)=>{
   
   }
 
+/**
+ * @author Kaaviyan 
+ * @date 08-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function for referralCode.
+ */
+
+export function generate(length){
+    const alphaN = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    let code = ''
+    for (let i=0; i <length; i++)
+    {
+        const referCode=Math.floor(Math.random()*alphaN.length)
+        code+=alphaN.charAt(referCode)
+    }return code
+}
