@@ -24,13 +24,13 @@ export let createProductManufacturing = async (req, res, next: any) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         try {
+            let date = new Date()
             const manufactureDetails: ManufactureDocument = req.body;
             const createData = new Manufacture(manufactureDetails);
             const insertData = await createData.save();
             const result = {}
             result['_id'] = insertData._id
             result['productName'] = insertData.productName
-            result['date'] = insertData.manufactureDate;
             result['date'] = insertData.ExpDate;
             result['Contact'] = insertData.email;
 
@@ -104,7 +104,7 @@ export let getManufacturinglist = async (req, res, next) => {
 
 // 4. delete user Rating 
 
-export let deleteRating = async (req, res, next) => {
+export let deleteProduct = async (req, res, next) => {
         try {
             const manufactureDetails: ManufactureDocument = req.body;
             const userdelete = await Manufacture.updateOne({_id:manufactureDetails.productId},{$set:{isDeleted:true}})
@@ -163,7 +163,7 @@ export let updateManufacturingProduct = async (req, res, next) => {
         try {
             const manufactureDetails: ManufactureDocument = req.body;
             const data = await Manufacture.findByIdAndUpdate({_id:manufactureDetails.productId},{$set:{
-                manufactureDate:manufactureDetails.manufactureDate,
+                ManufactureOn:manufactureDetails.ManufactureOn,
                 ExpDate:manufactureDetails.ExpDate,
                 Address:manufactureDetails.Address,
                 email:manufactureDetails.email,

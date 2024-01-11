@@ -1,4 +1,5 @@
 
+import { AnyBulkWriteOperation } from 'mongodb';
 import mongoose from 'mongoose';
 
 
@@ -9,7 +10,7 @@ export interface ManufactureDocument  extends mongoose.Document {
     companyId?:any;
     companyName?:String;
     productName?:string;
-    manufactureDate?:string;
+    ManufactureOn:string ;
     ExpDate?:string;
     Address?:any;
     email?:string;
@@ -27,7 +28,7 @@ const manufactureSchema = new mongoose.Schema({
     companyId: {type:mongoose.Types.ObjectId,ref:'Company'},
     companyName:{type:String},
     productName:{type:String},
-    manufactureDate:{type:Date},
+    ManufactureOn:{type:String},
     ExpDate:{type:String},
     Address:{
         name:{type:String},
