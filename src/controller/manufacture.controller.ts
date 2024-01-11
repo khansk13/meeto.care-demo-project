@@ -2,7 +2,6 @@ import { validationResult } from "express-validator";
 import { clientError, errorMessage } from "../helper/ErrorMessage";
 import { generate, response, sendEmailOtp } from "../helper/commonResponseHandler";
 import * as TokenManager from "../utils/tokenManager";
-import { Rating, ratingDocument } from "../model/rating.model";
 import { User, UserDocument } from "../model/user.model";
 import { Manufacture, ManufactureDocument } from "../model/manufacture.model";
 

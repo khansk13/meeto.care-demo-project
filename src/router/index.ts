@@ -7,7 +7,7 @@ import Login from './login.routes';
 import Company from './company.routes';
 import Doctor from './doctor.routes';
 import Post from './post.routes';
-import Rating from './rating.routes';
+import Rating from './productrating.routes.';
 import Order from './order.routes';
 import manufacture from './manufacture.routes'
 

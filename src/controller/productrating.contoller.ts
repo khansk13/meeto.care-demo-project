@@ -2,7 +2,7 @@ import { validationResult } from "express-validator";
 import { clientError, errorMessage } from "../helper/ErrorMessage";
 import { generate, response, sendEmailOtp } from "../helper/commonResponseHandler";
 import * as TokenManager from "../utils/tokenManager";
-import { Rating, ratingDocument } from "../model/rating.model";
+import { Rating, ratingDocument } from "../model/productrating.model";
 import { User, UserDocument } from "../model/user.model";
 
 
@@ -26,16 +26,14 @@ export let saveProductRating = async (req, res, next: any) => {
             const userDetails: UserDocument = req.body;
             const createData = new Rating(ratingDetails);
             const insertData = await createData.save();
-            const user= await User.findOne({_id:userDetails.userId},{userName:1,_id:0})
-            console.log(user)
-            const data= await Rating.updateOne({_id:ratingDetails.productId},{$push:{comments:[{comment:req.body.commment,name:user.userName}]}})
-            response(req, res, activity, 'Level-2', 'Save-ProductRating', true, 200, data, clientError.success.savedSuccessfully);
+            response(req, res, activity, 'Level-2', 'Save-ProductRating', true, 200, insertData, clientError.success.savedSuccessfully);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'Save-ProductRating', false, 500, {}, errorMessage.internalServer, err.message);
         }
     } else {
-        response(req, res, activity, 'Level-3', 'Save-ProductRating', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+        response(req, res, activity, 'Level-3', 'Save-ProductRating',
+          false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 }
 
@@ -73,7 +71,7 @@ export let getAllRating = async (req, res, next) => {
 
 // 3. all single user rating 
 
-export let getSingleUserRating = async (req, res, next) => {
+export let getSingleProductRating = async (req, res, next) => {
         try {
             const user = await Rating.findOne({_id:req.body._id})
             response(req, res, activity, 'Level-2', 'get-Single-User-Rating', true, 200, user, clientError.success.fetchedSuccessfully);
@@ -95,14 +93,14 @@ export let getSingleUserRating = async (req, res, next) => {
 
 // 4. delete user Rating 
 
-export let deleteRating = async (req, res, next) => {
+export let deleteProductRating = async (req, res, next) => {
         try {
             const {modifiedOn, modifiedBy} = req.body
             const userdelete = await Rating.updateOne({_id:req.body._id},{$set:{isDeleted:true}})
-            response(req, res, activity, 'Level-2', 'delete-Rating', true, 200, userdelete, clientError.success.deleteSuccess);
+            response(req, res, activity, 'Level-2', 'delete-Product-Rating', true, 200, userdelete, clientError.success.deleteSuccess);
         }
         catch (err: any) {
-            response(req, res, activity, 'Level-3', 'delete-Rating', false, 500, {}, errorMessage.internalServer, err.message);
+            response(req, res, activity, 'Level-3', 'delete-Product-Rating', false, 500, {}, errorMessage.internalServer, err.message);
         }
     } 
 
@@ -118,7 +116,7 @@ export let deleteRating = async (req, res, next) => {
 
 // 5. Rating filter api 
 
-export let getFilterRating = async (req, res, next) => {
+export let getFilterProductRating = async (req, res, next) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         try {
@@ -134,5 +132,37 @@ export let getFilterRating = async (req, res, next) => {
         }
     } else {
         response(req, res, activity, 'Level-3', 'get-Filter-Rating', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+    }
+} 
+
+/**
+ * @author Kaaviyan
+ * @date 08-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is used to update  user  .
+ */ 
+
+// 6.Update doctor rating  api 
+
+
+export let updateProductRating = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        try {
+            const ratingDetails: ratingDocument = req.body;
+            const UserDetails: UserDocument = req.body;
+            const user= await User.findOne({_id:UserDetails.userId})
+            const review = await Rating.findByIdAndUpdate({_id:ratingDetails.productId},
+                {$push:{comments:[{name:user.userName,comment:req.body.comment}]}})       
+
+            response(req, res, activity, 'Level-2', 'update-doctor-rating', true, 200, review, clientError.success.updateSuccess);
+        }
+        catch (err: any) {
+            response(req, res, activity, 'Level-3', 'update-doctor-rating', false, 500, {}, errorMessage.internalServer, err.message);
+        }
+    } else {
+        response(req, res, activity, 'Level-3', 'update-doctor-rating', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 } 

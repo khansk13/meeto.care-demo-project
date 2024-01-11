@@ -26,16 +26,8 @@ export let buyProduct = async (req, res, next: any) => {
             const userDetails: UserDocument = req.body;
             const orderDetails: orderDocument = req.body;
             const createData = new Order(orderDetails);
-            const insertData = await createData.save();
-            const user = await User.find({_id:userDetails.userId},{userName:1,mobileNumber:1})
-            console.log(user);
-            const result = {}
-                result['_id'] = insertData._id
-                result['orderDetails'] = insertData.details;
-                let finalResult = {};
-                finalResult["Order"] = 'product';
-                finalResult["orderDetails"] = result;
-           response(req, res, activity, 'Level-2', 'Save-ProductRating', true, 200, result, clientError.success.savedSuccessfully);
+            const insertData = await createData.save();            
+           response(req, res, activity, 'Level-2', 'Save-ProductRating', true, 200, insertData, clientError.success.savedSuccessfully);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'Save-ProductRating', false, 500, {}, errorMessage.internalServer, err.message);
@@ -101,14 +93,6 @@ export let getSingleOrder = async (req, res, next) => {
     }
 } 
 
-/**
- * @author Kaaviyan
- * @date 08-01-2024
- * @param {Object} req 
- * @param {Object} res 
- * @param {Function} next  
- * @description This Function is used to update  user  .
- */ 
 
 
 /**
