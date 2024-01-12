@@ -117,23 +117,25 @@ export let deleteDoctorRating = async (req, res, next) => {
 
 // 5. Rating filter api 
 
-export let getFilterDoctorRating = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        try {
-            const doctorRatingDetails: doctorRatingDocument = req.body;
-            const user = await DoctorRating.find({_id:doctorRatingDetails.doctorId},{
 
-            })
-            response(req, res, activity, 'Level-2', 'get-Filter-doctor-rating', true, 200, user, clientError.success.fetchedSuccessfully);
-        }
-        catch (err: any) {
-            response(req, res, activity, 'Level-3', 'get-Filter-doctor-rating', false, 500, {}, errorMessage.internalServer, err.message);
-        }
-    } else {
-        response(req, res, activity, 'Level-3', 'get-Filter-doctor-rating', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
-    }
-} 
+export let getFiltereRating = async (req, res, next) => {
+    try{
+    var findQuery;
+    var andList: any = []
+    var limit = req.body.limit ? req.body.limit : 0;
+    var page = req.body.page ? req.body.page : 0;
+    andList.push({isDeleted:false})
+    andList.push({status:1})
+   
+    findQuery =(andList.length > 0) ? { $and: andList } : {}
+    var ratingList = await User.find(findQuery).sort({ createdOn: -1 }).limit(limit).skip(page)
+    var ratingListCOunt = await User.find(findQuery).count()
+    response(req, res, activity, 'Level-1', 'Get-Filter-Rating', true, 200, { ratingList, ratingListCOunt }, clientError.success.fetchedSuccessfully);
+}
+    catch (err: any) {
+        response(req, res, activity, 'Level-3', 'Get-Filter-Rating', false, 500, {}, errorMessage.internalServer, err.message);
+    }   
+}
 
 /**
  * @author Kaaviyan

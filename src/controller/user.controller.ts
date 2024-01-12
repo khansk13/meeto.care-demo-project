@@ -102,7 +102,7 @@ export let getDetails = async (req, res, next) => {
 
 export let getSingleDetails = async (req, res, next) => {
         try {
-            const user = await User.findOne({_id:req.body._id})
+            const user = await User.findOne({_id:req.body.userId})
             response(req, res, activity, 'Level-2', 'get-Single-Details', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
@@ -130,6 +130,10 @@ export let updateUser = async (req, res, next) => {
             const data = await User.findByIdAndUpdate({_id:userDetails.userId},{$set:{
              DOB:userDetails.DOB,
              bankDetails:userDetails.bankDetails,
+             address:userDetails.address,
+             city:userDetails.city,
+             state:userDetails.state,
+             pincode:userDetails.pincode,
              modifiedOn:new Date(),
              modifiedBy:userDetails.modifiedBy
             }                                     
@@ -161,7 +165,7 @@ export let updateUser = async (req, res, next) => {
 export let deleteUser = async (req, res, next) => {
         try {
             const {modifiedOn, modifiedBy} = req.body
-            const userdelete = await User.updateOne({_id:req.body._id},{
+            const userdelete = await User.updateOne({_id:req.body.userId},{
                 $set:{
                     isDeleted:true,
                     modifiedOn,
@@ -230,7 +234,7 @@ export let Blockeduser = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const userDetails: UserDocument = req.body;
-             const user = await User.updateOne({ _id: userDetails._id }, { $push: { blockeduser:userDetails.blockeduser } })
+             const user = await User.updateOne({ _id: userDetails.userId }, { $push: { blockeduser:userDetails.blockeduser } })
             response(req, res, activity, 'Level-2', 'update-user', true, 200, user, clientError.account.inActive);
         }
         catch (err: any) {
@@ -272,3 +276,39 @@ export let feedpage = async (req, res, next) => {
         response(req, res, activity, 'Level-3', 'update-user', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 } 
+
+
+/**
+ * @author kaaviyan 
+ * @date 13-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is for follow.
+ */
+export let follow = async(req, res, next) =>{
+    try{
+        const follower = await User.findByIdAndUpdate({_id:req.body.userId},{$push:{followers:req.body.follow},$inc:{followersCount:1}})
+
+        response(req, res, activity, 'Level-2', 'User-follow', true, 200, follower , clientError.success.updateSuccess);
+    }catch(err){
+        response(req, res, activity, 'Level-3', 'User-follow', false, 500, {}, errorMessage.internalServer, err.message);   
+    }
+}
+
+/**
+ * @author kaaviyan 
+ * @date 13-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is for unfollow.
+ */
+export let unfollow = async(req, res, next) =>{
+    try{
+        const unfollow = await User.findByIdAndUpdate({_id:req.body.userId},{$pull:{followers:req.body.follow},$inc:{followersCount:-1}})
+        response(req, res, activity, 'Level-2', 'User-unfollow', true, 200, unfollow , clientError.success.updateSuccess);
+    }catch(err){
+        response(req, res, activity, 'Level-3', 'User-unfollow', false, 500, {}, errorMessage.internalServer, err.message);   
+    }
+}

@@ -73,7 +73,7 @@ export let getAllRating = async (req, res, next) => {
 
 export let getSingleProductRating = async (req, res, next) => {
         try {
-            const user = await Rating.findOne({_id:req.body._id})
+            const user = await Rating.findOne({_id:req.body.ratingId})
             response(req, res, activity, 'Level-2', 'get-Single-User-Rating', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
@@ -96,7 +96,7 @@ export let getSingleProductRating = async (req, res, next) => {
 export let deleteProductRating = async (req, res, next) => {
         try {
             const {modifiedOn, modifiedBy} = req.body
-            const userdelete = await Rating.updateOne({_id:req.body._id},{$set:{isDeleted:true}})
+            const userdelete = await Rating.updateOne({_id:req.body.ratingId},{$set:{isDeleted:true}})
             response(req, res, activity, 'Level-2', 'delete-Product-Rating', true, 200, userdelete, clientError.success.deleteSuccess);
         }
         catch (err: any) {
@@ -116,24 +116,25 @@ export let deleteProductRating = async (req, res, next) => {
 
 // 5. Rating filter api 
 
-export let getFilterProductRating = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        try {
-            const RatingDetails: ratingDocument = req.body;
-            const user = await Rating.find({_id:RatingDetails.productId},{
-                userName:1,mobileNumber:1 ,_id:0
+export let getFilterProduct = async (req, res, next) => {
+    try{
+    var findQuery;
+    var andList: any = []
+    var limit = req.body.limit ? req.body.limit : 0;
+    var page = req.body.page ? req.body.page : 0;
+    andList.push({isDeleted:false})
+    andList.push({status:1})
+   
+    findQuery =(andList.length > 0) ? { $and: andList } : {}
+    var ratinglist = await Rating.find(findQuery).sort({ createdOn: -1 }).limit(limit).skip(page)
+    var ratiinglistcount = await Rating.find(findQuery).count()
+    response(req, res, activity, 'Level-1', 'Get-Filter-product', true, 200, { ratinglist, ratiinglistcount }, clientError.success.fetchedSuccessfully);
+}
+    catch (err: any) {
+        response(req, res, activity, 'Level-3', 'Get-Filter-product', false, 500, {}, errorMessage.internalServer, err.message);
+    }   
+}
 
-            })
-            response(req, res, activity, 'Level-2', 'get-Filter-Rating', true, 200, user, clientError.success.fetchedSuccessfully);
-        }
-        catch (err: any) {
-            response(req, res, activity, 'Level-3', 'get-Filter-Rating', false, 500, {}, errorMessage.internalServer, err.message);
-        }
-    } else {
-        response(req, res, activity, 'Level-3', 'get-Filter-Rating', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
-    }
-} 
 
 /**
  * @author Kaaviyan

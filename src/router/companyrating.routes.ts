@@ -11,9 +11,9 @@ router.post('/createrating',
 );
 
 
-router.post('/singleuser',
+router.post('/singleRating',
     basicAuthUser,
-    checkRequestBodyParams('doctorId'),
+    checkRequestBodyParams('CompanyId'),
     getSingleCompanyRating
     );
 
@@ -24,8 +24,8 @@ router.post('/alluser',
 
 router.post('/filter',
     basicAuthUser,
-    checkRequestBodyParams('doctorId'),
-getFilterCompanyRating
+    checkRequestBodyParams('CompanyId'),
+    getFilterCompanyRating
 );
 
 router.post('/delete',

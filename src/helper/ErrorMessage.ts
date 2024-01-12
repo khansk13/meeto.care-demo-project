@@ -122,6 +122,9 @@ export let clientError = Object.freeze({
         sessionExpire: 'Session Expired!',
         unauthRoute: 'User is not authorized to Access the resource',
     },
+    post:{
+        postnotExist:"post is not created"
+    },
 
     code: {
         successCode: 200

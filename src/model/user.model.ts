@@ -10,7 +10,13 @@ export interface UserDocument extends mongoose.Document {
     referralCode?: String;
     myReferralCode?: String;
     bankDetails?: any;
+    address?:string;
+    city?:string;
+    state?:string;
+    pincode?:number;
     postCount?:number;
+    followers?:any;
+    followersCount?:number;
     blockeduser?: any;
     notification?: number;
     fcm_Token?: string;
@@ -33,12 +39,18 @@ const userSchema = new mongoose.Schema({
     profileUrl: { type: String },
     referralCode: { type: String },
     myReferralCode: { type: String },
+    followers:{type:mongoose.Types.ObjectId},
+    followersCount:{type:Number},
     bankDetails: [{
         accountNumber: { type: Number },
         ifsc: { type: String },
         accountHolderName: { type: String }
     }],
-    blockeduser:{type:mongoose.Types.ObjectId,ref:'user'},
+    address:{type:String},
+    city:{type:String},
+    state:{type:String},
+    pincode:{type:Number},
+    blockeduser:{type:mongoose.Types.ObjectId,ref:'userList'},
     notification: { type: Number},
     fcm_Token: { type: String },
     postCount:{type:Number},
@@ -52,4 +64,4 @@ const userSchema = new mongoose.Schema({
 });
 
 
-export const User = mongoose.model("user", userSchema);
+export const User = mongoose.model("userList", userSchema);

@@ -173,22 +173,24 @@ export let deleteOrder = async (req, res, next) => {
 
 // 6. user filter api 
 
-export let getFilterOrder = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        try {
-            const orderDetails: orderDocument = req.body;
-            const user = await Order.findOne({email:orderDetails._id},{
-               details:1 ,_id:0
 
-            })
-            response(req, res, activity, 'Level-2', 'get-Filter-order', true, 200, user, clientError.success.fetchedSuccessfully);
-        }
-        catch (err: any) {
-            response(req, res, activity, 'Level-3', 'get-Filter-order', false, 500, {}, errorMessage.internalServer, err.message);
-        }
-    } else {
-        response(req, res, activity, 'Level-3', 'get-Filter-order', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
-    }
-} 
 
+
+export let getFilteredOrder = async (req, res, next) => {
+    try{
+    var findQuery;
+    var andList: any = []
+    var limit = req.body.limit ? req.body.limit : 0;
+    var page = req.body.page ? req.body.page : 0;
+    andList.push({isDeleted:false})
+    andList.push({status:1})
+   
+    findQuery =(andList.length > 0) ? { $and: andList } : {}
+    var orderList = await User.find(findQuery).sort({ createdOn: -1 }).limit(limit).skip(page)
+    var orderCount = await User.find(findQuery).count()
+    response(req, res, activity, 'Level-1', 'Get-FilterOrderr', true, 200, { orderList, orderCount }, clientError.success.fetchedSuccessfully);
+}
+    catch (err: any) {
+        response(req, res, activity, 'Level-3', 'Get-FilterOrder', false, 500, {}, errorMessage.internalServer, err.message);
+    }   
+}

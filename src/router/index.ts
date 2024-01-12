@@ -12,6 +12,7 @@ import Order from './order.routes';
 import manufacture from './manufacture.routes'
 import Doctorrating from './doctorRating.routes';
 import comRating from './companyrating.routes'
+import Product from './product.router'
 
 router.use('/login', Login)
 router.use('/user', User)
@@ -22,6 +23,7 @@ router.use('/rating',Rating)
 router.use('/order',Order)
 router.use('/manufacture',manufacture)
 router.use('/docrate',Doctorrating)
+router.use('/product',Product)
 router.use('/companyrat',comRating)
 
 export default router ;

@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { createProductManufacturing, deleteProduct, getAlllist, getFilterProduct, getManufacturinglist, updateManufacturingProduct } from '../controller/manufacture.controller';
+import { createProductManufacturing, deleteProduct, getAlllist, getFilteredManufacture, getManufacturinglist, updateManufacturingProduct } from '../controller/manufacture.controller';
 import { checkRequestBodyParams } from '../middleware/Validators';
 import { basicAuthUser } from '../middleware/checkAuth';
 const router:Router=Router();
@@ -25,12 +25,12 @@ router.post('/allproduct',
 router.post('/filter',
     basicAuthUser,
     checkRequestBodyParams('productId'),
-    getFilterProduct
+    getFilteredManufacture
 );
 
 router.post('/delete',
     basicAuthUser,
-    checkRequestBodyParams('productId'),
+    checkRequestBodyParams('companyName'),
     deleteProduct
 );
 

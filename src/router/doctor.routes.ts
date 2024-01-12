@@ -11,9 +11,9 @@ router.post('/doctoruser',
 );
 
 
-router.post('/singleuser',
+router.post('/singlePanel',
     basicAuthUser,
-    checkRequestBodyParams('userId'),
+    checkRequestBodyParams('doctorId'),
     getSinglePanel
 );
 
@@ -24,7 +24,7 @@ router.post('/alluser',
 
 router.post('/filter',
     basicAuthUser,
-    checkRequestBodyParams('email'),
+    // checkRequestBodyParams('email'),
     getFilterPanel
 );
 
@@ -35,7 +35,7 @@ router.post('/delete',
 
 router.post('/updateuser',
     basicAuthUser,
-    checkRequestBodyParams('userId'),
+    checkRequestBodyParams('doctorId'),
     updatePanel
 );
 

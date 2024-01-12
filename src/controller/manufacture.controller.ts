@@ -106,7 +106,7 @@ export let getManufacturinglist = async (req, res, next) => {
 export let deleteProduct = async (req, res, next) => {
         try {
             const manufactureDetails: ManufactureDocument = req.body;
-            const userdelete = await Manufacture.updateOne({_id:manufactureDetails.productId},{$set:{isDeleted:true}})
+            const userdelete = await Manufacture.updateOne({companyName:manufactureDetails.companyName},{$set:{isDeleted:true}})
             response(req, res, activity, 'Level-2', 'delete-product', true, 200, userdelete, clientError.success.deleteSuccess);
         }
         catch (err: any) {
@@ -126,25 +126,24 @@ export let deleteProduct = async (req, res, next) => {
 
 // 5. Rating filter api 
 
-export let getFilterProduct = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        try {
-            const manufactureDetails: ManufactureDocument = req.body;
-            const user = await Manufacture.find({_id:manufactureDetails.productId},{
-                productName:1,manufactureDate:1,ExpDate:1,email:1 ,_id:0
-
-            })
-            response(req, res, activity, 'Level-2', 'get-Filter-product', true, 200, user, clientError.success.fetchedSuccessfully);
-        }
-        catch (err: any) {
-            response(req, res, activity, 'Level-3', 'get-Filter-product', false, 500, {}, errorMessage.internalServer, err.message);
-        }
-    } else {
-        response(req, res, activity, 'Level-3', 'get-Filter-product', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
-    }
-} 
-
+export let getFilteredManufacture = async (req, res, next) => {
+    try{
+    var findQuery;
+    var andList: any = []
+    var limit = req.body.limit ? req.body.limit : 0;
+    var page = req.body.page ? req.body.page : 0;
+    andList.push({isDeleted:false})
+    andList.push({status:1})
+   
+    findQuery =(andList.length > 0) ? { $and: andList } : {}
+    var manufactureList = await Manufacture.find(findQuery).sort({ createdOn: -1 }).limit(limit).skip(page)
+    var manufactureListCount = await Manufacture.find(findQuery).count()
+    response(req, res, activity, 'Level-1', 'Get-Filter-manufacture', true, 200, { manufactureList, manufactureListCount }, clientError.success.fetchedSuccessfully);
+}
+    catch (err: any) {
+        response(req, res, activity, 'Level-3', 'Get-Filter-Manufacture', false, 500, {}, errorMessage.internalServer, err.message);
+    }   
+}
 /**
  * @author Kaaviyan
  * @date 08-01-2024

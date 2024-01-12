@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { buyProduct, deleteOrder, getAllOrder, getFilterOrder, getSingleOrder, updateOrder } from '../controller/order.controller';
+import { buyProduct, deleteOrder, getAllOrder, getFilteredOrder, getSingleOrder, updateOrder } from '../controller/order.controller';
 import { checkRequestBodyParams } from '../middleware/Validators';
 import { basicAuthUser } from '../middleware/checkAuth';
 const router:Router=Router();
@@ -10,9 +10,9 @@ router.post('/orderDetails',
     buyProduct
 );
 
-router.post('/singleuser',
+router.post('/singleOrder',
     basicAuthUser,
-    checkRequestBodyParams('doctorId'),
+    checkRequestBodyParams('_id'),
     getAllOrder
     );
 
@@ -23,8 +23,8 @@ router.post('/alluser',
 
 router.post('/filter',
     basicAuthUser,
-    checkRequestBodyParams('doctorId'),
-    getFilterOrder
+    checkRequestBodyParams('_id'),
+    getFilteredOrder
 );
 
 router.post('/delete',

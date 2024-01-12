@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { Blockeduser, deleteUser, feedpage, getDetails, getFilteredUser, getSingleDetails, updateUser, userProfile } from '../controller/user.controller';
+import { Blockeduser, deleteUser, feedpage, follow, getDetails, getFilteredUser, getSingleDetails, unfollow, updateUser, userProfile } from '../controller/user.controller';
 import { checkRequestBodyParams } from '../middleware/Validators';
 import { basicAuthUser } from '../middleware/checkAuth';
 const router:Router=Router();
@@ -22,7 +22,7 @@ router.post('/alluser',
     getDetails
 );
 
-router.put('/filter',
+router.put('/filteruser',
     basicAuthUser,
     getFilteredUser
 );
@@ -40,7 +40,7 @@ router.post('/updateuser',
 
 router.post('/userblock',
     basicAuthUser,
-    checkRequestBodyParams('_id'),
+    checkRequestBodyParams('userId'),
     Blockeduser
 );
 
@@ -50,6 +50,22 @@ router.post('/userfeed',
     checkRequestBodyParams('userId'),
     feedpage
 );
+
+
+
+
+router.post('/follow',
+    basicAuthUser,
+    checkRequestBodyParams('userId'),
+    follow
+);
+
+router.post('/unfollow',
+    basicAuthUser,
+    checkRequestBodyParams('userId'),
+    unfollow
+);
+
 
 
 

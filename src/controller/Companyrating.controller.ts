@@ -117,22 +117,23 @@ export let deleteCompanyRating = async (req, res, next) => {
 // 5. Rating filter api 
 
 export let getFilterCompanyRating = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        try {
-            const compnayRatingDetails: companyRatingDocument = req.body;
-            const user = await companyRating.find({_id:compnayRatingDetails.CompanyId},{
-
-            })
-            response(req, res, activity, 'Level-2', 'get-Filter-company-rating', true, 200, user, clientError.success.fetchedSuccessfully);
-        }
-        catch (err: any) {
-            response(req, res, activity, 'Level-3', 'get-Filter-company-rating', false, 500, {}, errorMessage.internalServer, err.message);
-        }
-    } else {
-        response(req, res, activity, 'Level-3', 'get-Filter-company+-rating', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
-    }
-} 
+    try{
+    var findQuery;
+    var andList: any = []
+    var limit = req.body.limit ? req.body.limit : 0;
+    var page = req.body.page ? req.body.page : 0;
+    andList.push({isDeleted:false})
+    andList.push({status:1})
+   
+    findQuery =(andList.length > 0) ? { $and: andList } : {}
+    var ratingList = await companyRating.find(findQuery).sort({ createdOn: -1 }).limit(limit).skip(page)
+    var companyRatingList = await companyRating.find(findQuery).count()
+    response(req, res, activity, 'Level-1', 'Get-Filter-company-ratng', true, 200, { ratingList, companyRatingList }, clientError.success.fetchedSuccessfully);
+}
+    catch (err: any) {
+        response(req, res, activity, 'Level-3', 'Get-Filter-company-rating', false, 500, {}, errorMessage.internalServer, err.message);
+    }   
+}
 
 /**
  * @author Kaaviyan

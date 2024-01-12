@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {productcreate,getSingleuser,getAllUser,deleteUser,filter} from '../controller/product.controller';
+import {productcreate, updateProduct, getAllProduct, getSingleProduct, deleteproduct, getFilterProduct} from '../controller/product.controller';
 import { checkRequestBodyParams } from '../middleware/Validators';
 import { basicAuthUser } from '../middleware/checkAuth';
 const router:Router=Router();
@@ -13,9 +13,9 @@ router.post('/productcreate',
      
     router.get('/getSingleuser',
     basicAuthUser,
-    checkRequestBodyParams('id'),
+    checkRequestBodyParams('productId'),
    
-    getSingleuser
+    getSingleProduct
     );
 
 
@@ -23,23 +23,30 @@ router.post('/productcreate',
     basicAuthUser,
    // checkRequestBodyParams('id'),
    
-    getAllUser
+    getAllProduct
     );
 
     
     router.post('/deleteUser',
     basicAuthUser,
-    checkRequestBodyParams('id'),
+    checkRequestBodyParams('productId'),
    
-    deleteUser
+    deleteproduct
     );
 
     
-    router.get('/filter',
+    router.put('/filter',
     basicAuthUser,
     checkRequestBodyParams('id'),
-   
-    filter
+    getFilterProduct
+    );
+
+      
+    router.post('/update',
+    basicAuthUser,
+    checkRequestBodyParams('productId'),
+    updateProduct
+    
     );
 export default router;
 

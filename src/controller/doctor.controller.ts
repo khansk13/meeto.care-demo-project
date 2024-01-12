@@ -101,7 +101,7 @@ export let getSinglePanel = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const DoctorDetails: DoctorDocument = req.body;
-            const user = await Doctor.findOne({_id:DoctorDetails.userId})
+            const user = await Doctor.findOne({_id:req.body.doctorId})
             response(req, res, activity, 'Level-2', 'get-Single-Panel', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
@@ -128,7 +128,7 @@ export let updatePanel = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const DoctorDetails: DoctorDocument = req.body; 
-            const data = await Doctor.findByIdAndUpdate({_id:DoctorDetails.userId},{$set:{
+            const data = await Doctor.findByIdAndUpdate({_id:req.body.doctorId},{$set:{
                 qualification:DoctorDetails.qualification,
                 experience:DoctorDetails.experience,
                 specialization:DoctorDetails.specialization,
@@ -168,7 +168,7 @@ export let deletePanel = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const DoctorDetails: DoctorDocument = req.body;
-            const userdelete = await Doctor.updateOne({_id:DoctorDetails.userId},{$set:{isDeleted:true}})
+            const userdelete = await Doctor.updateOne({_id:req.body.doctorId},{$set:{isDeleted:true}})
             response(req, res, activity, 'Level-2', 'delete-Panel', true, 200, userdelete, clientError.success.deleteSuccess);
         }
         catch (err: any) {
@@ -192,20 +192,20 @@ export let deletePanel = async (req, res, next) => {
 // 6. user filter api 
 
 export let getFilterPanel = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        try {
-            const DoctorDetails: DoctorDocument = req.body;
-            const user = await Doctor.findOne({email:DoctorDetails.email},{
-                userName:1,mobileNumber:1 ,_id:0
-
-            })
-            response(req, res, activity, 'Level-2', 'get-Filter-Panel', true, 200, user, clientError.success.fetchedSuccessfully);
-        }
-        catch (err: any) {
-            response(req, res, activity, 'Level-3', 'get-Filter-Panel', false, 500, {}, errorMessage.internalServer, err.message);
-        }
-    } else {
-        response(req, res, activity, 'Level-3', 'get-Filter-Panel', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
-    }
-} 
+    try{
+    var findQuery;
+    var andList: any = []
+    var limit = req.body.limit ? req.body.limit : 0;
+    var page = req.body.page ? req.body.page : 0;
+    andList.push({isDeleted:false})
+    andList.push({status:1})
+   
+    findQuery =(andList.length > 0) ? { $and: andList } : {}
+    var doctorList = await Doctor.find(findQuery).sort({ createdOn: -1 }).limit(limit).skip(page)
+    var doctorCount = await Doctor.find(findQuery).count()
+    response(req, res, activity, 'Level-1', 'Get-FilterOrderr', true, 200, { doctorList, doctorCount }, clientError.success.fetchedSuccessfully);
+}
+    catch (err: any) {
+        response(req, res, activity, 'Level-3', 'Get-FilterOrder', false, 500, {}, errorMessage.internalServer, err.message);
+    }   
+}

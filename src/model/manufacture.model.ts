@@ -19,7 +19,8 @@ export interface ManufactureDocument  extends mongoose.Document {
    createdBy?: string;
    modifiedOn?: Date;
    modifiedBy?: string;
-   
+   isdelete?:boolean ;
+   status?:number;
 };
 
 const manufactureSchema = new mongoose.Schema({
@@ -39,8 +40,9 @@ const manufactureSchema = new mongoose.Schema({
     createdOn:{type:Date},
     createdBy:{type:String},
     modifiedOn:{type:Date},
-    modifiedBy:{type:String}
-
+    modifiedBy:{type:String},
+    isdelete:{type:Boolean,default:false},
+    Status:{type:Number, default:1},
  
 });
 
