@@ -43,7 +43,7 @@ export let buyProduct = async (req, res, next: any) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 10-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -70,7 +70,7 @@ export let getAllOrder = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 10-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -99,7 +99,7 @@ export let getSingleOrder = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 10-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -136,7 +136,7 @@ export let updateOrder = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 10-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -164,7 +164,7 @@ export let deleteOrder = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 10-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  

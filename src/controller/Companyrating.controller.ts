@@ -38,7 +38,7 @@ export let saveCompanyRating = async (req, res, next: any) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 11-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -61,7 +61,7 @@ export let getAllCompanyRating = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 11-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -84,7 +84,7 @@ export let getSingleCompanyRating = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 11-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -107,7 +107,7 @@ export let deleteCompanyRating = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 11-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -137,7 +137,7 @@ export let getFilterCompanyRating = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 11-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  

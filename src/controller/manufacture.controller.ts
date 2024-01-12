@@ -48,7 +48,7 @@ export let createProductManufacturing = async (req, res, next: any) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -71,7 +71,7 @@ export let getAlllist = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -94,7 +94,7 @@ export let getManufacturinglist = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -117,7 +117,7 @@ export let deleteProduct = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -146,7 +146,7 @@ export let getFilteredManufacture = async (req, res, next) => {
 }
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  

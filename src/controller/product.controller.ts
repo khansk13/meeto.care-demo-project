@@ -49,7 +49,7 @@ export let getSingleProduct = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 12-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  

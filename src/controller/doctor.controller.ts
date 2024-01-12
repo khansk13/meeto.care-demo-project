@@ -60,7 +60,7 @@ export let doctorPanel = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -87,7 +87,7 @@ export let getAllPanel = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -114,7 +114,7 @@ export let getSinglePanel = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -154,7 +154,7 @@ export let updatePanel = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -182,7 +182,7 @@ export let deletePanel = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  

@@ -10,7 +10,7 @@ var activity = "ratings"
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 10-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -39,7 +39,7 @@ export let saveProductRating = async (req, res, next: any) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 10-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -62,7 +62,7 @@ export let getAllRating = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 10-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -84,7 +84,7 @@ export let getSingleProductRating = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 10-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -107,7 +107,7 @@ export let deleteProductRating = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 10-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -138,7 +138,7 @@ export let getFilterProduct = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 10-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  

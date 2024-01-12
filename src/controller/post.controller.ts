@@ -39,8 +39,8 @@ export let postCreate = async (req, res, next: any) => {
 
 
  /**
- * @author kaaviyan S
- * @date 13-01-2024
+ * @author kaaviyan 
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -64,7 +64,7 @@ export let deletePost= async (req, res, next) => {
 
 /**
  * @author kaaviyan
- * @date 13-01-2024
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -89,7 +89,7 @@ export let singlePost = async( req, res, next ) =>{
 
 /**
  * @author Kaaviyan
- * @date 10-01-2024
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -123,8 +123,8 @@ export let updatePost = async (req, res, next) => {
 
 
  /**
- * @author kaaviyan S
- * @date 13-01-2024
+ * @author kaaviyan 
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -143,8 +143,8 @@ export let likes = async(req, res, next) =>{
 
 
  /**
- * @author kaaviyan S
- * @date 13-01-2024
+ * @author kaaviyan 
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -173,8 +173,8 @@ export let getFilteredPost = async (req, res, next) => {
 
 
  /**
- * @author kaaviyan S
- * @date 13-01-2024
+ * @author kaaviyan 
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -194,8 +194,8 @@ export let getFilteredPost = async (req, res, next) => {
 
 
  /**
- * @author kaaviyan S
- * @date 13-01-2024
+ * @author kaaviyan 
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -217,8 +217,8 @@ export let getFilteredPost = async (req, res, next) => {
 
 
  /**
- * @author kaaviyan S
- * @date 13-01-2024
+ * @author kaaviyan 
+ * @date 09-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  

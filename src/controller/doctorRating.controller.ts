@@ -39,7 +39,7 @@ export let saveDoctorRating = async (req, res, next: any) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 11-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -62,7 +62,7 @@ export let getAllDoctorRating = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 11-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -85,7 +85,7 @@ export let getSingleDoctorRating = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 11-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -108,7 +108,7 @@ export let deleteDoctorRating = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 11-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
@@ -139,7 +139,7 @@ export let getFiltereRating = async (req, res, next) => {
 
 /**
  * @author Kaaviyan
- * @date 08-01-2024
+ * @date 11-01-2024
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
