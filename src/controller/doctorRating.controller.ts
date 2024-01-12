@@ -74,7 +74,7 @@ export let getAllDoctorRating = async (req, res, next) => {
 export let getSingleDoctorRating = async (req, res, next) => {
         try {
             const doctorRatingDetails: doctorRatingDocument = req.body;
-            const user = await DoctorRating.findOne({_id:doctorRatingDetails.doctotId})
+            const user = await DoctorRating.findOne({_id:doctorRatingDetails.doctorId})
             response(req, res, activity, 'Level-2', 'get-Single-Doctor-Rating', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
@@ -122,7 +122,7 @@ export let getFilterDoctorRating = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const doctorRatingDetails: doctorRatingDocument = req.body;
-            const user = await DoctorRating.find({_id:doctorRatingDetails.doctotId},{
+            const user = await DoctorRating.find({_id:doctorRatingDetails.doctorId},{
 
             })
             response(req, res, activity, 'Level-2', 'get-Filter-doctor-rating', true, 200, user, clientError.success.fetchedSuccessfully);
@@ -152,12 +152,15 @@ export let updateDoctorRating = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const doctorRatingDetails: doctorRatingDocument = req.body;
-            const UserDetails: UserDocument = req.body;
-            const user= await User.findOne({_id:UserDetails.userId})
-            const review = await DoctorRating.findByIdAndUpdate({_id:doctorRatingDetails.doctotId},
-                {$push:{comments:[{name:user.userName,comment:req.body.comment}]}})       
-
-            response(req, res, activity, 'Level-2', 'update-doctor-rating', true, 200, review, clientError.success.updateSuccess);
+            const data = await DoctorRating.updateOne({_id:doctorRatingDetails._id},{$set:{
+                    Reviews:doctorRatingDetails.Reviews,
+                    ratingStar:doctorRatingDetails.ratingStar
+                    
+               }                                     
+               })
+       
+   
+            response(req, res, activity, 'Level-2', 'update-doctor-rating', true, 200, data, clientError.success.updateSuccess);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'update-doctor-rating', false, 500, {}, errorMessage.internalServer, err.message);

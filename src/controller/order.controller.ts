@@ -25,15 +25,17 @@ export let buyProduct = async (req, res, next: any) => {
         try {
             const userDetails: UserDocument = req.body;
             const orderDetails: orderDocument = req.body;
+            const ordernum =   Math.floor(1000 + Math.random() * 10000000);
+            orderDetails.orderNumber = ordernum;
             const createData = new Order(orderDetails);
             const insertData = await createData.save();            
-           response(req, res, activity, 'Level-2', 'Save-ProductRating', true, 200, insertData, clientError.success.savedSuccessfully);
+           response(req, res, activity, 'Level-2', 'Save-order', true, 200, insertData, clientError.success.savedSuccessfully);
         }
         catch (err: any) {
-            response(req, res, activity, 'Level-3', 'Save-ProductRating', false, 500, {}, errorMessage.internalServer, err.message);
+            response(req, res, activity, 'Level-3', 'Save-order', false, 500, {}, errorMessage.internalServer, err.message);
         }
     } else {
-        response(req, res, activity, 'Level-3', 'Save-ProductRating', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+        response(req, res, activity, 'Level-3', 'Save-order', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 }
 
@@ -50,19 +52,19 @@ export let buyProduct = async (req, res, next: any) => {
 
 // 2. all user  api 
 
-export let getAllOder = async (req, res, next) => {
+export let getAllOrder = async (req, res, next) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         try {
             const orderDetails: orderDocument = req.body;
             const user = await Order.find({isDeleted:false})
-            response(req, res, activity, 'Level-2', 'get-all-Panel', true, 200, user, clientError.success.fetchedSuccessfully);
+            response(req, res, activity, 'Level-2', 'get-all-order', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
-            response(req, res, activity, 'Level-3', 'get-all-Panel', false, 500, {}, errorMessage.internalServer, err.message);
+            response(req, res, activity, 'Level-3', 'get-all-order', false, 500, {}, errorMessage.internalServer, err.message);
         }
     } else {
-        response(req, res, activity, 'Level-3', 'get-all-Panel', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+        response(req, res, activity, 'Level-3', 'get-all-order', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 } 
 
@@ -82,17 +84,54 @@ export let getSingleOrder = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const orderDetails: orderDocument = req.body;
-            const user = await Order.findOne({_id:orderDetails.productId})
-            response(req, res, activity, 'Level-2', 'get-Single-Panel', true, 200, user, clientError.success.fetchedSuccessfully);
+            const user = await Order.findOne({_id:orderDetails._id})
+
+            response(req, res, activity, 'Level-2', 'get-Single-order', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
-            response(req, res, activity, 'Level-3', 'get-Single-Panel', false, 500, {}, errorMessage.internalServer, err.message);
+            response(req, res, activity, 'Level-3', 'get-Single-order', false, 500, {}, errorMessage.internalServer, err.message);
         }
     } else {
-        response(req, res, activity, 'Level-3', 'get-Single-Panel', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+        response(req, res, activity, 'Level-3', 'get-Single-order', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 } 
 
+
+/**
+ * @author Kaaviyan
+ * @date 08-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is used to update  order  .
+ */ 
+
+// 4. Update order api 
+
+export let updateOrder = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+        try {
+            const orderDetails: orderDocument = req.body; 
+            const data = await Order.findByIdAndUpdate({_id:orderDetails._id},{$set:{
+                productDetails:orderDetails.productDetails,
+                deliveryCharges:orderDetails.deliveryCharges,
+                totalPrice:orderDetails.totalPrice,
+                totalAmount:orderDetails.totalAmount,
+                shippingAddress:orderDetails.shippingAddress
+                
+            }                                     
+            })
+           
+            response(req, res, activity, 'Level-2', 'update-order', true, 200, data, clientError.success.updateSuccess);
+        }
+        catch (err: any) {
+            response(req, res, activity, 'Level-3', 'update-order', false, 500, {}, errorMessage.internalServer, err.message);
+        }
+    } else {
+        response(req, res, activity, 'Level-3', 'update-order', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+    }
+} 
 
 
 /**
@@ -111,14 +150,14 @@ export let deleteOrder = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const orderDetails: orderDocument = req.body;
-            const userdelete = await Order.updateOne({_id:orderDetails.userId},{$set:{isDeleted:true}})
-            response(req, res, activity, 'Level-2', 'delete-Panel', true, 200, userdelete, clientError.success.deleteSuccess);
+            const userdelete = await Order.updateOne({_id:orderDetails._id},{$set:{isDeleted:true}})
+            response(req, res, activity, 'Level-2', 'delete-order', true, 200, userdelete, clientError.success.deleteSuccess);
         }
         catch (err: any) {
-            response(req, res, activity, 'Level-3', 'delete-Panel', false, 500, {}, errorMessage.internalServer, err.message);
+            response(req, res, activity, 'Level-3', 'delete-order', false, 500, {}, errorMessage.internalServer, err.message);
         }
     } else {
-        response(req, res, activity, 'Level-3', 'delete-Panel', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+        response(req, res, activity, 'Level-3', 'delete-order', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 } 
 
@@ -139,17 +178,17 @@ export let getFilterOrder = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const orderDetails: orderDocument = req.body;
-            const user = await Order.findOne({email:orderDetails.productId},{
+            const user = await Order.findOne({email:orderDetails._id},{
                details:1 ,_id:0
 
             })
-            response(req, res, activity, 'Level-2', 'get-Filter-Panel', true, 200, user, clientError.success.fetchedSuccessfully);
+            response(req, res, activity, 'Level-2', 'get-Filter-order', true, 200, user, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
-            response(req, res, activity, 'Level-3', 'get-Filter-Panel', false, 500, {}, errorMessage.internalServer, err.message);
+            response(req, res, activity, 'Level-3', 'get-Filter-order', false, 500, {}, errorMessage.internalServer, err.message);
         }
     } else {
-        response(req, res, activity, 'Level-3', 'get-Filter-Panel', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+        response(req, res, activity, 'Level-3', 'get-Filter-order', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
     }
 } 
 

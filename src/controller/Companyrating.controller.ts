@@ -151,10 +151,14 @@ export let updateCompanyRating = async (req, res, next) => {
     if (errors.isEmpty()) {
         try {
             const compnayRatingDetails: companyRatingDocument = req.body;
-            const UserDetails: UserDocument = req.body;
-            const user= await User.findOne({_id:UserDetails.userId})
-            const review = await companyRating.findByIdAndUpdate({_id:compnayRatingDetails.CompanyId},
-                {$push:{comments:[{name:user.userName,comment:req.body.comment}]}})       
+            const review = await companyRating.findByIdAndUpdate({_id:compnayRatingDetails._id},
+                {$set:{
+                    productName:compnayRatingDetails.productName,
+                    reviews:compnayRatingDetails.reviews,
+                    ratingStar:compnayRatingDetails.ratingStar
+                }
+
+        })       
 
             response(req, res, activity, 'Level-2', 'update-doctor-rating', true, 200, review, clientError.success.updateSuccess);
         }

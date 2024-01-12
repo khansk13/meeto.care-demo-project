@@ -4,9 +4,9 @@ import { checkRequestBodyParams } from '../middleware/Validators';
 import { basicAuthUser } from '../middleware/checkAuth';
 const router:Router=Router();
 
-router.post('/createuser',
+router.post('/doctorrating',
     basicAuthUser,
-    checkRequestBodyParams('email'),
+    checkRequestBodyParams('doctorId'),
     saveDoctorRating
 );
 
@@ -33,9 +33,8 @@ router.post('/delete',
     deleteDoctorRating
 );
 
-router.post('/updateuser',
+router.post('/updaterating',
     basicAuthUser,
-    checkRequestBodyParams('doctorId'),
     updateDoctorRating
 );
 

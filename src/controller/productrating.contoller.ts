@@ -153,9 +153,11 @@ export let updateProductRating = async (req, res, next) => {
         try {
             const ratingDetails: ratingDocument = req.body;
             const UserDetails: UserDocument = req.body;
-            const user= await User.findOne({_id:UserDetails.userId})
-            const review = await Rating.findByIdAndUpdate({_id:ratingDetails.productId},
-                {$push:{comments:[{name:user.userName,comment:req.body.comment}]}})       
+            const review = await Rating.findByIdAndUpdate({_id:req.body.ratingId},
+                {$set:{ review:ratingDetails.review,
+                        ratingstar:ratingDetails.ratingstar
+
+                }})       
 
             response(req, res, activity, 'Level-2', 'update-doctor-rating', true, 200, review, clientError.success.updateSuccess);
         }

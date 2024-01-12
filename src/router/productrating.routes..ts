@@ -33,9 +33,9 @@ router.post('/delete',
     deleteProductRating
 );
 
-router.post('/updateuser',
+router.post('/updaterating',
     basicAuthUser,
-    checkRequestBodyParams('doctorId'),
+    checkRequestBodyParams('ratingId'),
     updateProductRating
 );
 

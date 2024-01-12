@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { Blockeduser, deleteUser, feedpage, getDetails, getFilterDetails, getSingleDetails, updateUser, userProfile } from '../controller/user.controller';
+import { Blockeduser, deleteUser, feedpage, getDetails, getFilteredUser, getSingleDetails, updateUser, userProfile } from '../controller/user.controller';
 import { checkRequestBodyParams } from '../middleware/Validators';
 import { basicAuthUser } from '../middleware/checkAuth';
 const router:Router=Router();
@@ -22,10 +22,9 @@ router.post('/alluser',
     getDetails
 );
 
-router.post('/filter',
+router.put('/filter',
     basicAuthUser,
-    checkRequestBodyParams('email'),
-    getFilterDetails
+    getFilteredUser
 );
 
 router.post('/delete',

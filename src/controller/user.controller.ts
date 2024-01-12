@@ -25,12 +25,14 @@ export let userProfile = async (req, res, next) => {
         try {
             const userData = await User.findOne({ $and: [{ isDeleted: false }, { email: req.body.email }] });
             if (!userData) {
+                let date = new Date();
                 const userDetails: UserDocument = req.body;
                 userDetails.myReferralCode = generate(5);  
                 const userotp =   Math.floor(1000 + Math.random() * 9999);
                 userDetails.otp = userotp ;
                 const createData = new User(userDetails);
                 let insertData = await createData.save();
+                userDetails.createdOn = date ; 
                 const token = await TokenManager.CreateJWTToken({
                     id: insertData["_id"],
                     name: insertData["name"],
@@ -117,6 +119,7 @@ export let getSingleDetails = async (req, res, next) => {
  * @description This Function is used to update  user  .
  */ 
 
+
 // 4. Update user api 
 
 export let updateUser = async (req, res, next) => {
@@ -183,25 +186,33 @@ export let deleteUser = async (req, res, next) => {
 
 // 6. user filter api 
 
-export let getFilterDetails = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (errors.isEmpty()) {
-        try {
-            const userDetails: UserDocument = req.body;
-            const user = await User.find({email:userDetails.email},{
-                userName:1,mobileNumber:1 ,_id:0
 
-            })
-            response(req, res, activity, 'Level-2', 'get-Filter-Details', true, 200, user, clientError.success.fetchedSuccessfully);
-        }
-        catch (err: any) {
-            response(req, res, activity, 'Level-3', 'get-Filter-Details', false, 500, {}, errorMessage.internalServer, err.message);
-        }
-    } else {
-        response(req, res, activity, 'Level-3', 'get-Filter-Details', false, 422, {}, errorMessage.fieldValidation, JSON.stringify(errors.mapped()));
+export let getFilteredUser = async (req, res, next) => {
+    try{
+    var findQuery;
+    var andList: any = []
+    var limit = req.body.limit ? req.body.limit : 0;
+    var page = req.body.page ? req.body.page : 0;
+    andList.push({isDeleted:false})
+    andList.push({status:1})
+    if (req.body.email) {
+        andList.push({ email: req.body.email })
     }
-} 
-
+    if (req.body.userName) {
+        andList.push({ name: req.body.userName })
+    }
+    if (req.body.mobileNumber) {
+        andList.push({ mobileNumber: req.body.mobileNumber })
+    }
+    findQuery =(andList.length > 0) ? { $and: andList } : {}
+    var userList = await User.find(findQuery).sort({ createdOn: -1 }).limit(limit).skip(page)
+    var userCount = await User.find(findQuery).count()
+    response(req, res, activity, 'Level-1', 'Get-FilterUser', true, 200, { userList, userCount }, clientError.success.fetchedSuccessfully);
+}
+    catch (err: any) {
+        response(req, res, activity, 'Level-3', 'Get-FilterUser', false, 500, {}, errorMessage.internalServer, err.message);
+    }   
+}
 
 /**
  * @author Kaaviyan

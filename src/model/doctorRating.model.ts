@@ -2,10 +2,12 @@ import * as mongoose from "mongoose";
 
 export interface doctorRatingDocument extends mongoose.Document {
     _id?: any;
-    doctotId?:any;
+    doctorId?:any;
+    doctorName?:string;
     userId?:any;
-    reviews?:any ;
-    ratingstar?:any ;
+    title?:string;
+    Reviews?:string;
+    ratingStar?:number;
     isDeleted?: boolean;
     status?: number;
     createdOn?: Date;
@@ -18,11 +20,10 @@ const doctorratingSchema = new mongoose.Schema({
     _id: { type: mongoose.Types.ObjectId, required: true, auto: true },
     doctorId:{type:mongoose.Types.ObjectId,ref:'doctorslist'},
     userId:{type:mongoose.Types.ObjectId,ref:'user'},
-    reviews:[{
-        name:{type:String},
-        Feedback:{type:String}
-    }],
-    ratingstar:{type:Number},
+    doctorName:{type:String},
+    title:{type:String},
+    Reviews:{type:String},
+    ratingStar:{typr:Number},
     isDeleted: { type: Boolean, default: false },
     status: { type: Number, default: 1 },
     createdOn: { type: Date },
