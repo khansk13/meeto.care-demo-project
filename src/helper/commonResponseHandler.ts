@@ -119,3 +119,11 @@ export function generate(length){
         code+=alphaN.charAt(referCode)
     }return code
 }
+
+ export function incrementWithMath(value) {
+    return Math.floor(value) + 1;          
+    }
+
+
+let result = incrementWithMath(5);
+console.log(result); // Output: 6
