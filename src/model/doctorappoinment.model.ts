@@ -10,6 +10,7 @@ export interface AppoinmentDocument extends mongoose.Document {
     hospitalAddress?:string;
     hospitalContact?:string;
     patientDetails?:any;
+    appoinmentNumber?:number;
     createdOn?: Date;
     createdBy?: string;
     modifiedOn?: Date;

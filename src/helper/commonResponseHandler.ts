@@ -120,10 +120,17 @@ export function generate(length){
     }return code
 }
 
- export function incrementWithMath(value) {
-    return Math.floor(value) + 1;          
-    }
 
 
-let result = incrementWithMath(5);
-console.log(result); // Output: 6
+let ticketCounter: number = 1;
+
+function padNumber(num: number, width: number): string {
+    const padded = num.toString().padStart(width, '0');
+    return padded;
+}
+
+export function generateTicketNumber(): string {
+    const ticketNumber: string = `pix-${padNumber(ticketCounter, 3)}`;
+    ticketCounter++;
+    return ticketNumber;
+  }

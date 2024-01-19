@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 import { clientError, errorMessage } from "../helper/ErrorMessage";
-import { response, sendEmailOtp } from "../helper/commonResponseHandler";
+import { generateTicketNumber, response, sendEmailOtp } from "../helper/commonResponseHandler";
 import { Appoinment, AppoinmentDocument } from "../model/doctorappoinment.model";
 import * as TokenManager from "../utils/tokenManager";
 
@@ -18,11 +18,15 @@ var activity = "Appoinment"
 export let doctorAppoinment = async (req, res, next: any) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
+        const id =generateTicketNumber()
         try {
             const AppoinmentDetails: AppoinmentDocument = req.body; 
-            const createData = new Appoinment(AppoinmentDetails);
-            const insertData = await createData.save();            
-           response(req, res, activity, 'Level-2', 'Save-Appoinmnet', true, 200, insertData, clientError.success.savedSuccessfully);
+            const  AppoinmentDetails.p
+            const createData = new Appoinment(AppoinmentDetails)
+
+            const insertData = await createData.save();         
+            
+            response(req, res, activity, 'Level-2', 'Save-Appoinmnet', true, 200, insertData, clientError.success.savedSuccessfully);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'Save-Appoinmnet', false, 500, {}, errorMessage.internalServer, err.message);
@@ -108,7 +112,7 @@ export let updateAppoinment = async (req, res, next) => {
             // //let id = incrementWithMath(5);
             // const number = incrementWithMath(5);
             const id =   Math.floor(1000 + Math.random() * 9999);
-            AppoinmentDetails.patientDetails.appoinmentNumber = id ;
+            // AppoinmentDetails.patientDetails.appoinmentNumber = id ;
             const data = await Appoinment.updateMany({_id:AppoinmentDetails.appoinmentId},{$push:{
                 patientDetails:AppoinmentDetails.patientDetails
             }                                     
