@@ -21,7 +21,7 @@ export let doctorAppoinment = async (req, res, next: any) => {
         const id =generateTicketNumber()
         try {
             const AppoinmentDetails: AppoinmentDocument = req.body; 
-            const  AppoinmentDetails.p
+            AppoinmentDetails.patientDetails= generateTicketNumber();
             const createData = new Appoinment(AppoinmentDetails)
 
             const insertData = await createData.save();         

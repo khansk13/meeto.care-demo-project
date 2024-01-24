@@ -14,6 +14,9 @@ import Doctorrating from './doctorRating.routes';
 import comRating from './companyrating.routes'
 import Product from './product.router'
 import appoinment from './doctorAppoinmnetroutes'
+import ContactList from './contact.routers';
+import Faq from './faq.routers';
+import Helpus from './help.router';
 
 router.use('/login', Login)
 router.use('/user', User)
@@ -27,5 +30,8 @@ router.use('/docrate',Doctorrating)
 router.use('/product',Product)
 router.use('/companyrat',comRating)
 router.use('/appoinment',appoinment)
+router.use('/contactus',ContactList)
+router.use('/faq',Faq)
+router.use('/help',Helpus)
 
 export default router ;
