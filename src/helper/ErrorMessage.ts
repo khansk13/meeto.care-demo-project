@@ -115,6 +115,7 @@ export let clientError = Object.freeze({
         isExpied: 'Your plan is expired, Please Renewal your package',
         verification: 'Your account is not active, Please check your email ',
         loggedOut: 'You have been Successfully logged out',
+        report:'your post are reported'
     },
     token: {
         tokenExpire: 'Your Token has been Expired',

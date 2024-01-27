@@ -17,6 +17,8 @@ import appoinment from './doctorAppoinmnetroutes'
 import ContactList from './contact.routers';
 import Faq from './faq.routers';
 import Helpus from './help.router';
+import Ticket from './ticket.routes'
+import Policy from './privacyPolicy.routes'
 
 router.use('/login', Login)
 router.use('/user', User)
@@ -33,5 +35,7 @@ router.use('/appoinment',appoinment)
 router.use('/contactus',ContactList)
 router.use('/faq',Faq)
 router.use('/help',Helpus)
+router.use('/ticket',Ticket)
+router.use('/privacyPolicy',Policy)
 
 export default router ;

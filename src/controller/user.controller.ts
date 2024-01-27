@@ -265,9 +265,8 @@ export let feedpage = async (req, res, next) => {
             const PostDetails: PostDocument = req.body;
             const user = await User.findOne({ _id: userDetails.userId },{blockeduser:1,_id:1})
             console.log(user);
-            const blockeduser= user.blockeduser
-            const userpost = await Post.find({$and:[{$nin:blockeduser},{isdelete:false}]})
-            response(req, res, activity, 'Level-2', 'update-user', true, 200, userpost, clientError.success.fetchedSuccessfully);
+            const remainingPosts = await Post.find({$and:[{$nin:user.blockeduser},{isDeleted:false}]})
+            response(req, res, activity, 'Level-2', 'update-user', true, 200, remainingPosts, clientError.success.fetchedSuccessfully);
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'update-user', false, 500, {}, errorMessage.internalServer, err.message);
@@ -288,7 +287,7 @@ export let feedpage = async (req, res, next) => {
  */
 export let follow = async(req, res, next) =>{
     try{
-        const follower = await User.findByIdAndUpdate({_id:req.body.userId},{$push:{followers:req.body.follow},$inc:{followersCount:1}})
+        const follower = await User.findByIdAndUpdate({_id:req.body.userId},{$push:{follower:req.body.follow},$inc:{followersCount:1}})
 
         response(req, res, activity, 'Level-2', 'User-follow', true, 200, follower , clientError.success.updateSuccess);
     }catch(err){
@@ -310,5 +309,101 @@ export let unfollow = async(req, res, next) =>{
         response(req, res, activity, 'Level-2', 'User-unfollow', true, 200, unfollow , clientError.success.updateSuccess);
     }catch(err){
         response(req, res, activity, 'Level-3', 'User-unfollow', false, 500, {}, errorMessage.internalServer, err.message);   
+    }
+}
+
+
+
+/**
+ * @author kaaviyan 
+ * @date 19-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is for follower details.
+ */
+
+
+export let userFollowersDetail = async (req, res, next) => {
+    try {
+        const userDetails: UserDocument = req.body;
+        const findFollower = await User.findOne({ _id:userDetails.userId }).populate('follower',{userName:1,email:1,mobileNumber:1})
+        
+         response(req, res, activity, 'Level-2', 'Save-Company', true, 200, findFollower, clientError.success.fetchedSuccessfully);
+    } catch (err: any) {
+        response(req, res, activity, 'Level-3', 'Save-Company', false, 500, {}, errorMessage.internalServer, err.message);
+    }
+} 
+
+
+/**
+ * @author kaaviyan 
+ * @date 20-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is for following.
+ */
+export let following = async(req, res, next) =>{
+    try{
+        const follower = await User.findByIdAndUpdate({_id:req.body.userId},{$push:{following:req.body.followId}})
+
+        response(req, res, activity, 'Level-2', 'User-follow', true, 200, follower , clientError.success.updateSuccess);
+    }catch(err){
+        response(req, res, activity, 'Level-3', 'User-follow', false, 500, {}, errorMessage.internalServer, err.message);   
+    }
+}
+
+/**
+ * @author kaaviyan 
+ * @date 20-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is for savepost.
+ */
+export let savepost = async(req, res, next) =>{
+    try{
+        const follower = await User.findByIdAndUpdate({_id:req.body.userId},{$push:{savePost:req.body.postId}})
+
+        response(req, res, activity, 'Level-2', 'User-follow', true, 200, follower , clientError.success.updateSuccess);
+    }catch(err){
+        response(req, res, activity, 'Level-3', 'User-follow', false, 500, {}, errorMessage.internalServer, err.message);   
+    }
+}
+
+/**
+ * @author kaaviyan 
+ * @date 20-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is for unsavepost.
+ */
+export let unsavepost = async(req, res, next) =>{
+    try{
+        const follower = await User.findByIdAndUpdate({_id:req.body.userId},{$pull:{savePost:req.body.postId}})
+
+        response(req, res, activity, 'Level-2', 'User-follow', true, 200, follower , clientError.success.updateSuccess);
+    }catch(err){
+        response(req, res, activity, 'Level-3', 'User-follow', false, 500, {}, errorMessage.internalServer, err.message);   
+    }
+}
+
+/**
+ * @author kaaviyan 
+ * @date 20-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is for dashboard.
+ */
+export let userDashBoard = async(req, res, next) =>{
+    try{
+        const userDetails: UserDocument = req.body;
+        const data  = await User.findOne({_id:userDetails.userId},{userName:1,follower:1,followersCount:1,postCount:1,DOB:1,_id:0})
+        response(req, res, activity, 'Level-2', 'User-follow', true, 200, data , clientError.success.fetchedSuccessfully);
+    }catch(err){
+        response(req, res, activity, 'Level-3', 'User-follow', false, 500, {}, errorMessage.internalServer, err.message);   
     }
 }
