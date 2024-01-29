@@ -21,12 +21,16 @@ export let doctorAppoinment = async (req, res, next: any) => {
         const id =generateTicketNumber()
         try {
             const AppoinmentDetails: AppoinmentDocument = req.body; 
-            AppoinmentDetails.patientDetails= generateTicketNumber();
+            const number= generateTicketNumber();
             const createData = new Appoinment(AppoinmentDetails)
-
-            const insertData = await createData.save();         
-            
-            response(req, res, activity, 'Level-2', 'Save-Appoinmnet', true, 200, insertData, clientError.success.savedSuccessfully);
+            const insertData = await createData.save(); 
+            const find = await Appoinment.findOne({ $and: [{ appoinmentStatus:req.body.Status}, {doctorName:req.body.name}] });
+            if (find) {
+                const data = await Appoinment.updateOne({_id:insertData._id},{$set:{patientDetails:[{appoinmentNumber:number}]}});
+                response(req, res, activity, 'Level-2', 'Save-Appoinmnet', true, 200, insertData, clientError.success.savedSuccessfully);
+            } else {
+                response(req, res, activity, 'Level-2', 'Save-Appoinmnet', false, 204,{}, clientError.success.unsavedSuccesfully);
+            }
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'Save-Appoinmnet', false, 500, {}, errorMessage.internalServer, err.message);

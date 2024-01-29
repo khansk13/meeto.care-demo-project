@@ -88,6 +88,7 @@ export let clientError = Object.freeze({
     },
     success: {
         savedSuccessfully: 'Saved Successfully',
+        unsavedSuccesfully:'un save suv=ceesfully',
         deleteSuccess: "Deleted successfully",
         updateSuccess: "Updated successfully",
         registerSuccessfully: 'Registered Successfully',

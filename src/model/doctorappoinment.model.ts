@@ -7,6 +7,7 @@ export interface AppoinmentDocument extends mongoose.Document {
     appoinmentId?;any ;
     doctorName?:string;
     hospitatName?:string;
+    appoinmentStatus?:string;
     hospitalAddress?:string;
     hospitalContact?:string;
     patientDetails?:any;
@@ -24,6 +25,7 @@ const AppoinmentSchema = new mongoose.Schema({
     hospitatName:{type:String},
     hospitalAddress:{type:String},
     hospitalContact:{type:String},
+    appoinmentStatus:{type:String},
     patientDetails:[{
         patientName:{type:String},
         patientId:{type:mongoose.Types.ObjectId,ref:'userlist'},
