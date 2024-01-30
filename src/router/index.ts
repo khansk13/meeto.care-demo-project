@@ -19,6 +19,8 @@ import Faq from './faq.routers';
 import Helpus from './help.router';
 import Ticket from './ticket.routes'
 import Policy from './privacyPolicy.routes'
+import Terms from './termsAndConditions.routes'
+
 
 router.use('/login', Login)
 router.use('/user', User)
@@ -37,5 +39,6 @@ router.use('/faq',Faq)
 router.use('/help',Helpus)
 router.use('/ticket',Ticket)
 router.use('/privacyPolicy',Policy)
+router.use('/terms',Terms)
 
 export default router ;

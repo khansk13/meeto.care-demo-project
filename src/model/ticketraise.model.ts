@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 export interface ticketDocumnet extends mongoose.Document {
     _id?: any;
     ticketRaise?:any;
+    companyId?:any;
     isDeleted?: boolean;
     status?: number;
     createdOn?: Date;
@@ -13,8 +14,8 @@ export interface ticketDocumnet extends mongoose.Document {
 
 const ticketSchema = new mongoose.Schema({
     _id: { type: mongoose.Types.ObjectId, required: true, auto: true },
+    companyId:{type:mongoose.Types.ObjectId},
     ticketRaise:{   
-         companyId:{type:mongoose.Types.ObjectId,ref:"company"},
          questions:{type:String},
          answers:{type:String},
          name:{type:String},

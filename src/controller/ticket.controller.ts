@@ -42,8 +42,8 @@ export let createTicket = async (req, res, next) => {
         const createData = new User(ticketDetails);
         const data = await User.findOne({_id:userDetails.userId},{userName:1})
         console.log(data);
-        const generateid =  Math.floor(100000000 + Math.random() * 99999999999999);
-        const user = await ticketRaise.updateMany({_id:req.body._id},{$push:{ticketRaise:[{name:data.userName,ticketId:generateid,questions:req.body.question}]}})
+        const generateid =  Math.floor(100000000 + Math.random() * 99999999999999); 
+        const user = await ticketRaise.updateMany({_id:req.body.companyId},{$push:{ticketRaise:[{name:data.userName,ticketId:generateid,questions:req.body.question}]}})
          response(req, res, activity, 'Level-2', 'Save-Company', true, 200, user, clientError.success.updateSuccess);
     } catch (err: any) {
         response(req, res, activity, 'Level-3', 'Save-Company', false, 500, {}, errorMessage.internalServer, err.message);

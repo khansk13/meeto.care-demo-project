@@ -21,15 +21,15 @@ export let doctorAppoinment = async (req, res, next: any) => {
         const id =generateTicketNumber()
         try {
             const AppoinmentDetails: AppoinmentDocument = req.body; 
-            const number= generateTicketNumber();
+            const number =   Math.floor(1000 + Math.random() * 99999999);
             const createData = new Appoinment(AppoinmentDetails)
             const insertData = await createData.save(); 
-            const find = await Appoinment.findOne({ $and: [{ appoinmentStatus:req.body.Status}, {doctorName:req.body.name}] });
-            if (find) {
-                const data = await Appoinment.updateOne({_id:insertData._id},{$set:{patientDetails:[{appoinmentNumber:number}]}});
+            // const find = await Appoinment.findOne({ $and: [{ appoinmentStatus:req.body.Status}, {doctorName:req.body.name}] });
+            if (insertData.appoinmentStatus===req.body.Status) {
+                const data = await Appoinment.updateOne({_id:insertData._id},{$push:{patientDetails:[{appoinmentNumber:number}]}});
                 response(req, res, activity, 'Level-2', 'Save-Appoinmnet', true, 200, insertData, clientError.success.savedSuccessfully);
             } else {
-                response(req, res, activity, 'Level-2', 'Save-Appoinmnet', false, 204,{}, clientError.success.unsavedSuccesfully);
+                response(req, res, activity, 'Level-2', 'Save-Appoinmnet', true, 404,{}, clientError.success.unsavedSuccesfully);
             }
         }
         catch (err: any) {

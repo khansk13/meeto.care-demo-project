@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export interface PolicyDocument extends mongoose.Document {
+export interface TermsDocumnet extends mongoose.Document {
     _id?:any;
     privacyPolicy?:string;
     termsAndConditions?:string;
@@ -13,7 +13,7 @@ export interface PolicyDocument extends mongoose.Document {
     
 };
 
-const policySchema = new mongoose.Schema({
+const termsSchema = new mongoose.Schema({
     _id: { type: mongoose.Types.ObjectId, required: true, auto: true },
     privacyPolicy:{type:String},
     termsAndConditions:{type:String},
@@ -27,4 +27,4 @@ const policySchema = new mongoose.Schema({
 
 });
 
-export const privacyPolicy = mongoose.model('privacypolicy', policySchema);
+export const termsAndConditions = mongoose.model('terms', termsSchema);
