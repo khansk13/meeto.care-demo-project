@@ -55,7 +55,7 @@ export let doctorAppoinment = async (req, res, next: any) => {
 // 2. all appoinmnet 
 
 export let getAllAppoinment = async (req, res, next) => {
-    const errors = validationResult(req);
+    const errors = validationResult(req);``
     if (errors.isEmpty()) {
         try {
             const AppoinmentDetails: AppoinmentDocument = req.body;
