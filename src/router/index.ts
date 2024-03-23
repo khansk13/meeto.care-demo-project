@@ -20,6 +20,10 @@ import Helpus from './help.router';
 import Ticket from './ticket.routes'
 import Policy from './privacyPolicy.routes'
 import Terms from './termsAndConditions.routes'
+import userdata from './userdata.routes'
+import cart from './cart.routes'
+import customerService from './supportAgent.router'
+import wishLists from './wishListroutes'
 
 
 router.use('/login', Login)
@@ -40,5 +44,9 @@ router.use('/help',Helpus)
 router.use('/ticket',Ticket)
 router.use('/privacyPolicy',Policy)
 router.use('/terms',Terms)
+router.use('/userdata',userdata)
+router.use('/cart', cart)
+router.use('/support',customerService)
+router.use('/WishList',wishLists)
 
 export default router ;

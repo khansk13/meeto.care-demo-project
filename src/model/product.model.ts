@@ -10,8 +10,10 @@ export interface productDocument extends mongoose.Document {
     ProductImage?: string;
     ProductGif?: string;
     Specifications?: string;
+    inStock?: Boolean;
+    shipping?: String;
     OriginalPrice?: number;
-    Quantity?: string;
+    Quantity?: number;
     Selling?: number;
     Category?: string;
     ProductDescription ?: string;
@@ -27,6 +29,9 @@ const productSchema = new mongoose.Schema({
     ProductImage: { type: String },
     ProductGif: { type: String },
     Specifications: {type:String},
+    instock:{type:Boolean , default :true},
+    quantity:{ type: Number},
+    Shipping:{ type: String},
     OriginalPrice: { type: Number },
     Selling:{type: Number},
     Category:{type: String},

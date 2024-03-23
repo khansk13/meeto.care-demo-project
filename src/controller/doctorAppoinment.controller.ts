@@ -26,7 +26,7 @@ export let doctorAppoinment = async (req, res, next: any) => {
             const insertData = await createData.save(); 
             // const find = await Appoinment.findOne({ $and: [{ appoinmentStatus:req.body.Status}, {doctorName:req.body.name}] });
             if (insertData.appoinmentStatus===req.body.Status) {
-                const data = await Appoinment.updateOne({_id:insertData._id},{$push:{patientDetails:[{appoinmentNumber:number}]}});
+                const data = await Appoinment.updateOne({_id:insertData._id},{$push:{patientDetails:{appoinmentNumber:number}}});
                 response(req, res, activity, 'Level-2', 'Save-Appoinmnet', true, 200, insertData, clientError.success.savedSuccessfully);
             } else {
                 response(req, res, activity, 'Level-2', 'Save-Appoinmnet', true, 404,{}, clientError.success.unsavedSuccesfully);

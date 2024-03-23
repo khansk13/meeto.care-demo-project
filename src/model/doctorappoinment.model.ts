@@ -4,10 +4,10 @@ import * as mongoose from "mongoose";
 export interface AppoinmentDocument extends mongoose.Document {
     _id?: any;
     doctorId?: any;
-    appoinmentId?;any ;
     doctorName?:string;
+    appoinmentId?:any;
     hospitatName?:string;
-    appoinmentStatus?:string;
+    appoinmentStatus?:boolean;
     hospitalAddress?:string;
     hospitalContact?:string;
     patientDetails?:any;
@@ -20,12 +20,12 @@ export interface AppoinmentDocument extends mongoose.Document {
 const AppoinmentSchema = new mongoose.Schema({
     _id: { type: mongoose.Types.ObjectId, required: true, auto: true },
     doctorId:{type:mongoose.Types.ObjectId,ref:'doctorslist'},
-    appoinmentId:{type:mongoose.Types.ObjectId},
     doctorName:{type:String},
     hospitatName:{type:String},
     hospitalAddress:{type:String},
     hospitalContact:{type:String},
-    appoinmentStatus:{type:String},
+    appoinmentStatus:{type:Boolean, default:true},
+    appoinmentId:{type:mongoose.Types.ObjectId},
     patientDetails:[{
         patientName:{type:String},
         patientId:{type:mongoose.Types.ObjectId,ref:'userlist'},

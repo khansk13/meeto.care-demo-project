@@ -21,12 +21,17 @@ export let postCreate = async (req, res, next: any) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {
         try {
-            const userDetails :UserDocument = req.body;
+             const userDetails :UserDocument = req.body;
             const PostDetails: PostDocument = req.body;
             const createData = new Post(PostDetails);
             const insertData = await createData.save();
-            const count = await User.findByIdAndUpdate({_id:userDetails.userId},{$inc:{postCount:1}})
-            response(req, res, activity, 'Level-2', 'post-create', true, 200, count, clientError.success.savedSuccessfully);
+           if (insertData) {
+                const data = await User.updateOne({_id:userDetails.userId},{$inc:{postCount:1}})
+                response(req, res, activity, 'Level-2', 'post-create', true, 200, data, clientError.success.savedSuccessfully);
+
+           } else {
+                response(req, res, activity, 'Level-2', 'post-create', true, 200, {}, clientError.user.userDontExist);
+           }
         }
         catch (err: any) {
             response(req, res, activity, 'Level-3', 'post-create', false, 500, {}, errorMessage.internalServer, err.message);

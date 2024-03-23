@@ -27,7 +27,7 @@ export let userProfile = async (req, res, next) => {
             if (!userData) {
                 let date = new Date();
                 const userDetails: UserDocument = req.body;
-                userDetails.myReferralCode = generate(5);  
+                userDetails.myReferralCode = generate(6);  
                 const userotp =   Math.floor(1000 + Math.random() * 9999);
                 userDetails.otp = userotp ;
                 const createData = new User(userDetails);
@@ -47,7 +47,7 @@ export let userProfile = async (req, res, next) => {
                 finalResult["UserDetails"] = result;
                 finalResult["token"] = token;
                 sendEmailOtp(insertData.email,insertData.otp)
-                response(req, res, activity, 'Level-2', 'User-Profile', true, 200, result, clientError.success.registerSuccessfully);
+                response(req, res, activity, 'Level-2', 'User-Profile', true, 200, finalResult, clientError.success.registerSuccessfully);
                 } else {
                     response(req, res, activity, 'Level-3', 'User-Profile', true, 422, {},clientError.email.emailNotVerified);
                 }
@@ -129,11 +129,11 @@ export let updateUser = async (req, res, next) => {
             const userDetails: UserDocument = req.body; 
             const data = await User.findByIdAndUpdate({_id:userDetails.userId},{$set:{
              DOB:userDetails.DOB,
-             bankDetails:userDetails.bankDetails,
-             address:userDetails.address,
-             city:userDetails.city,
-             state:userDetails.state,
-             pincode:userDetails.pincode,
+            //  bankDetails:userDetails.bankDetails,
+            //  address:userDetails.address,
+            //  city:userDetails.city,
+            //  state:userDetails.state,
+            //  pincode:userDetails.pincode,
              modifiedOn:new Date(),
              modifiedBy:userDetails.modifiedBy
             }                                     
@@ -199,18 +199,18 @@ export let getFilteredUser = async (req, res, next) => {
     var page = req.body.page ? req.body.page : 0;
     andList.push({isDeleted:false})
     andList.push({status:1})
-    if (req.body.email) {
-        andList.push({ email: req.body.email })
-    }
+    // if (req.body.email) {
+    //     andList.push({ email: req.body.email })
+    // }
     if (req.body.userName) {
-        andList.push({ name: req.body.userName })
+        andList.push({ name: req.body.userName })   
     }
-    if (req.body.mobileNumber) {
-        andList.push({ mobileNumber: req.body.mobileNumber })
-    }
+    // if (req.body.mobileNumber) {
+    //     andList.push({ mobileNumber: req.body.mobileNumber })
+    // }
     findQuery =(andList.length > 0) ? { $and: andList } : {}
-    var userList = await User.find(findQuery).sort({ createdOn: -1 }).limit(limit).skip(page)
-    var userCount = await User.find(findQuery).count()
+    var userList = await User.find(findQuery).sort({ userName: -1 }).limit(limit).skip(page)
+    var userCount = await User.find(findQuery).countDocuments()
     response(req, res, activity, 'Level-1', 'Get-FilterUser', true, 200, { userList, userCount }, clientError.success.fetchedSuccessfully);
 }
     catch (err: any) {
@@ -224,8 +224,8 @@ export let getFilteredUser = async (req, res, next) => {
  * @param {Object} req 
  * @param {Object} res 
  * @param {Function} next  
- * @description This Function is used to blocked user  .
- */ 
+ * @description This Function is used to blocked user  . 
+     */ 
 
 // 7. blocked user user api 
 
@@ -287,9 +287,10 @@ export let feedpage = async (req, res, next) => {
  */
 export let follow = async(req, res, next) =>{
     try{
-        const follower = await User.findByIdAndUpdate({_id:req.body.userId},{$push:{follower:req.body.follow},$inc:{followersCount:1}})
+        const follower = await User.findByIdAndUpdate({_id:req.body.userId},{$push:{followers:req.body.follow},$inc:{followersCount:1}})
+        const  showfollower = await User.find({_id:req.body.userId},{followers:1})
 
-        response(req, res, activity, 'Level-2', 'User-follow', true, 200, follower , clientError.success.updateSuccess);
+        response(req, res, activity, 'Level-2', 'User-follow', true, 200, showfollower , clientError.success.updateSuccess);
     }catch(err){
         response(req, res, activity, 'Level-3', 'User-follow', false, 500, {}, errorMessage.internalServer, err.message);   
     }
@@ -316,6 +317,27 @@ export let unfollow = async(req, res, next) =>{
 
 /**
  * @author kaaviyan 
+ * @date 13-01-2024
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next  
+ * @description This Function is for unfollow.
+ */
+export let showfollower = async(req, res, next) =>{
+    try{
+        const userDetails: UserDocument = req.body;
+        const data = await User.findOne({userName:userDetails.userName},{followers:1})
+        
+        response(req, res, activity, 'Level-2', 'User-unfollow', true, 200, data , clientError.success.fetchedSuccessfully);
+    }catch(err){
+        response(req, res, activity, 'Level-3', 'User-unfollow', false, 500, {}, errorMessage.internalServer, err.message);   
+    }
+}
+
+
+
+/**
+ * @author kaaviyan 
  * @date 19-01-2024
  * @param {Object} req 
  * @param {Object} res 
@@ -326,10 +348,9 @@ export let unfollow = async(req, res, next) =>{
 
 export let userFollowersDetail = async (req, res, next) => {
     try {
-        const userDetails: UserDocument = req.body;
-        const findFollower = await User.findOne({ _id:userDetails.userId }).populate('follower',{userName:1,email:1,mobileNumber:1})
+        const userData = await User.findOne({ _id: req.body._id }).populate('followers', { email: 1 });
         
-         response(req, res, activity, 'Level-2', 'Save-Company', true, 200, findFollower, clientError.success.fetchedSuccessfully);
+         response(req, res, activity, 'Level-2', 'Save-Company', true, 200, userData, clientError.success.fetchedSuccessfully);
     } catch (err: any) {
         response(req, res, activity, 'Level-3', 'Save-Company', false, 500, {}, errorMessage.internalServer, err.message);
     }

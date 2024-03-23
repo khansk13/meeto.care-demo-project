@@ -17,7 +17,7 @@ var activity = "doctorRating"
  * @description This Function is used to company rating  .
  */ 
 
-// 1. Rating  api 
+// 1. Rating  api  
 export let saveCompanyRating = async (req, res, next: any) => {
     const errors = validationResult(req);
     if (errors.isEmpty()) {

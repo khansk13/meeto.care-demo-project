@@ -5,7 +5,6 @@ import { basicAuthUser } from '../middleware/checkAuth';
 const router:Router=Router();
 
 router.post('/postcreate',
-    basicAuthUser,
     checkRequestBodyParams('userId'),
     postCreate
 );

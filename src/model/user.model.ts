@@ -15,7 +15,7 @@ export interface UserDocument extends mongoose.Document {
     state?:string;
     pincode?:number;
     postCount?:number;
-    follower?:any;
+    followers?:any;
     following?:any;
     followersCount?:number;
     blockeduser?: any;
@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema({
     profileUrl: { type: String },
     referralCode: { type: String },
     myReferralCode: { type: String },
-    follower:{type:mongoose.Types.ObjectId,ref:'userList'},
+    followers:[{type:mongoose.Types.ObjectId,ref:'userList'}],
     followersCount:{type:Number},
     bankDetails: [{
         accountNumber: { type: Number },
@@ -59,6 +59,14 @@ const userSchema = new mongoose.Schema({
     fcm_Token: { type: String },
     postCount:{type:Number},
     otp: { type: Number },
+    productId:{type:mongoose.Types.ObjectId,ref:'product'},
+    productName:{type:String},
+    quantity:{type:Number},
+    color:{type:String},
+    styleName:{type:String},
+    instock:{type:Boolean ,default :true},
+    totalItems:{type:Number},
+    totalCost:{type:String},
     isDeleted: { type: Boolean, default: false },
     status: { type: Number, default: 1 },
     createdOn: { type: Date },

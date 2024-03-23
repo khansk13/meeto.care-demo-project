@@ -105,7 +105,8 @@ export let clientError = Object.freeze({
         fetchedSuccessfully: 'Fetched Successfully !',
         sendSuccessfully: 'Send Successfully',
         ratingsucces :'succesfully rating the product',
-        postNotExist :'post are not created'
+        postNotExist :'post are not created',
+        productNotExist:'product are not exist'
 
     },
     account: {
@@ -126,6 +127,10 @@ export let clientError = Object.freeze({
     },
     post:{
         postnotExist:"post is not created"
+    },
+    product:{
+        success:"your product will be created",
+        dublicate:"This is a existing product"
     },
 
     code: {
